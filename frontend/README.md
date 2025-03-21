@@ -30,6 +30,7 @@ Clone the repository to your local machine:
 ```bash
 git clone https://github.com/kavindalj/CircadiuaLux.git
 cd CircadiuaLux/frontend
+```
 
 ### 2. Install Dependencies
 
