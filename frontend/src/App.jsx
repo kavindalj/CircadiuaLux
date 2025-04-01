@@ -1,10 +1,13 @@
-function App() {
+import React from "react"
+import Login from "./Components/Login"
 
-  return (
-    <>
-      <h1 className="text-7xl font-bold">hello world</h1>
-    </>
+const App = () => {
+  return(
+    <div className="w-full">
+      <Login/> 
+    </div> 
   )
+    
 }
 
 export default App
