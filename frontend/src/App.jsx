@@ -1,10 +1,10 @@
 import React from "react"
-import Login from "./components/Login"
+import Nav from "./components/Nav"
 
 const App = () => {
   return(
     <div className="w-full">
-      <Login/> 
+      <Nav/>
     </div> 
   )
     
