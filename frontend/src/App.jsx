@@ -1,11 +1,11 @@
 import React from "react"
-import Login from "./components/Login"
+import Home from "./pages/Home"
 
 const App = () => {
   return(
-    <div className="w-full">
-      <Login/> 
-    </div> 
+    <div>
+      <Home/>
+    </div>
   )
     
 }
