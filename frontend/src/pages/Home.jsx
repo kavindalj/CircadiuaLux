@@ -1,12 +1,10 @@
 import React from 'react'
-import Nav from "../components/Nav";
-
 
 const Home = () => {
   return (
-    <div className="w-full">
-    <Nav/>
-  </div> 
+    <>
+      <h1>Home</h1>
+    </>
   )
 }
 
