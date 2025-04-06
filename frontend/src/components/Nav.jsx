@@ -4,7 +4,7 @@ import Logo from '../assets/images/Logo.png';
 
 const Nav = () => {
   return (
-    <nav className="bg-white shadow flex items-center justify-between p-4 h-16">
+    <nav className="bg-white shadow flex items-center justify-between p-4 h-16 border-b border-[#34A8DD]">
       <div className="flex items-center space-x-4">
         <div className="h-12 w-42 overflow-hidden flex items-center justify-center">
           <img src={Logo} alt="Logo" className="h-auto w-auto scale-165" />
