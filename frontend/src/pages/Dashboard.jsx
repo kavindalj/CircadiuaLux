@@ -1,5 +1,6 @@
 import React from 'react'
 import Nav from "../components/Nav";
+import PatientDetailsForm from '@/components/PatientDetailsForm';
 
 const Dashboard = () => {
   return (
@@ -8,7 +9,7 @@ const Dashboard = () => {
         <Nav />
       </div>
       <div>
-        <h1>caregiver</h1>
+        <PatientDetailsForm/>
       </div>
     </>
   )
