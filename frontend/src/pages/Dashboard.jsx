@@ -9,7 +9,7 @@ const Dashboard = () => {
         <Nav />
       </div>
       <div>
-        <PatientDetailsForm/>
+        <PatientDetailsForm />
       </div>
     </>
   )
