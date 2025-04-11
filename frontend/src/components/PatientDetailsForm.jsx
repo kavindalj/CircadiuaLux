@@ -9,7 +9,7 @@ const PatientDetailsForm = () => {
 
   return (
     <div className="w-full h-[70vh] px-15 py-7 flex flex-col items-start">
-      
+
       {/* Main container for buttons and forms */}
       <div className="w-full max-w-[350px] mt-1">
 
@@ -17,17 +17,15 @@ const PatientDetailsForm = () => {
         <div className="flex gap-4 mb-3">
           <button
             onClick={() => setActiveForm("patient")}
-            className={`w-[300px] h-[40px] text-sm md:text-base px-1 py-1 font-medium rounded-lg cursor-pointer ${
-              activeForm === "patient" ? `${activeTextColor} bg-gray-100` : `${inactiveTextColor}` 
-            }`}
+            className={`w-[300px] h-[40px] text-sm md:text-base px-1 py-1 font-medium rounded-lg cursor-pointer ${activeForm === "patient" ? `${activeTextColor} bg-gray-100` : `${inactiveTextColor}`
+              }`}
           >
             Patient Details
           </button>
           <button
             onClick={() => setActiveForm("lighting")}
-            className={`w-[300px] h-[40px] text-sm md:text-base px-1 py-1 font-medium rounded-lg cursor-pointer ${
-              activeForm === "lighting" ? `${activeTextColor} bg-gray-100` : `${inactiveTextColor}` 
-            }`}
+            className={`w-[300px] h-[40px] text-sm md:text-base px-1 py-1 font-medium rounded-lg cursor-pointer ${activeForm === "lighting" ? `${activeTextColor} bg-gray-100` : `${inactiveTextColor}`
+              }`}
           >
             Lighting Settings
           </button>
