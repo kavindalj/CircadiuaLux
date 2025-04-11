@@ -20,8 +20,8 @@ const Dashboard = () => {
         </div>
 
         {/* Main content */}
-        <div className="flex-1 p-4 overflow-auto">
-          <AllPatientsForm/>
+        <div className="flex-10 pt-28 pr-100 pb-14 pl-30 overflow-auto">
+          <AllPatientsForm />
         </div>
       </div>
     </div>

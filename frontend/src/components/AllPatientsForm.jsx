@@ -7,7 +7,7 @@ const AllPatientsForm = () => {
             {/* Header Section */}
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-left text-xl font-bold mb-1">Patient Details</h2>
-                <button className="bg-sky-500 text-white px-4 py-2 rounded hover:bg-sky-600 transition">
+                <button className="bg-sky-500 text-white font-bold px-10 py-2 rounded hover:bg-sky-600 transition">
                     Add Patient
                 </button>
             </div>

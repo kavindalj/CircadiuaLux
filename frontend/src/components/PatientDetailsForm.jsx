@@ -8,7 +8,7 @@ const PatientDetailsForm = () => {
   const inactiveTextColor = "text-gray-500 hover:text-black";
 
   return (
-    <div className="w-full h-[70vh] px-15 py-7 flex flex-col items-start">
+ <div className="w-full h-[70vh] px-15 py-7 flex flex-col items-start">
 
       {/* Main container for buttons and forms */}
       <div className="w-full max-w-[350px] mt-1">
