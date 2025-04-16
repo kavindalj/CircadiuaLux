@@ -12,7 +12,7 @@ const DashboardAdmin = () => {
         <div className='flex flex-1 overflow-hidden'>
           <p>Sidebar</p>
           <main className='flex-1 p-6 overflow-auto flex justify-center items-center'>
-            <AddDeviceForm />
+            <PasswordChangeForm />
           </main>
         </div>
       </div>

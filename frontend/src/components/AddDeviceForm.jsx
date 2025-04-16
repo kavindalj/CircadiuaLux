@@ -16,7 +16,7 @@ function AddDeviceForm() {
             />
            </div>
            <div className="mb-3 text-left">
-            <label className="block font-semibold text-sm mb-1">Building NO</label>
+            <label className="block font-semibold text-sm mb-1">Building No</label>
             <input 
                 type="text" 
                 name="bno" 
@@ -25,7 +25,7 @@ function AddDeviceForm() {
             />
            </div>
            <div className="mb-3 text-left">
-            <label className="block font-semibold text-sm mb-1">Floor NO</label>
+            <label className="block font-semibold text-sm mb-1">Floor No</label>
             <input 
                 type="text" 
                 name="fno" 
@@ -34,7 +34,7 @@ function AddDeviceForm() {
             />
            </div>
            <div className="mb-3 text-left">
-            <label className="block font-semibold text-sm mb-1">Room NO</label>
+            <label className="block font-semibold text-sm mb-1">Room No</label>
             <input 
                 type="text" 
                 name="rno" 
