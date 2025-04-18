@@ -15,111 +15,35 @@ const CaretakerSidebar = () => {
   };
 
   return (
-    <div style={styles.sidebar}>
-      <ul style={styles.navList}>
+    <div className="w-[200px] h-[92vh] bg-gray-100 shadow-md border-r border-[#34A8DD] flex flex-col justify-between items-center py-5">
+      <ul className="w-full mt-8 list-none">
         {navItems.map(({ label, icon: Icon, link }) => (
-          <li key={label} style={styles.navItemWrapper}>
+          <li key={label} className="w-full flex justify-center">
             <a
               href={link}
               onClick={() => handleNavClick(label)}
-              style={{
-                ...styles.navButton,
-                color: activeItem === label ? '#34A8DD' : '#757575',
-              }}
-              onMouseEnter={(e) => {
-                if (activeItem !== label) e.currentTarget.style.color = '#555';
-              }}
-              onMouseLeave={(e) => {
-                if (activeItem !== label) e.currentTarget.style.color = '#757575';
-              }}
+              className={`flex items-center font-bold text-sm no-underline gap-2 px-10 py-2 w-full justify-start transition-colors duration-200 ${
+                activeItem === label ? 'text-[#34A8DD]' : 'text-gray-500 hover:text-gray-700'
+              }`}
             >
-              <Icon style={styles.navIcon} />
+              <Icon className="text-lg" />
               <span>{label}</span>
             </a>
           </li>
         ))}
       </ul>
 
-      <div style={styles.logoutContainer}>
+      <div className="w-full px-5 mb-4 flex justify-center">
         <a
           href="###########"
-          style={styles.logoutButton}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = '#c82333';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#dc3545';
-          }}
+          className="flex items-center font-bold text-sm no-underline gap-2 text-[#dc3545] hover:text-[#c82333] transition-colors duration-200 px-6 py-5 w-full justify-start"
         >
-          <MdLogout style={styles.navIcon} />
+          <MdLogout className="text-lg" />
           <span>Log Out</span>
         </a>
       </div>
     </div>
   );
-};
-
-const styles = {
-  sidebar: {
-    width: '200px',
-    backgroundColor: '#f7f7f7',
-    padding: '20px 0',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: '92vh',
-    boxShadow: '1px 0 5px rgba(0, 0, 0, 0.1)',
-    borderRight: '1px solid #34A8DD',
-  },
-  navList: {
-    listStyle: 'none',
-    padding: '34px 0px 0px 0px',
-    margin: 0,
-    width: '100%',
-  },
-  navItemWrapper: {
-    width: '100%',
-
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  navButton: {
-    display: 'flex',
-    alignItems: 'center',
-    fontWeight: 'bold',
-    fontSize: '15px',
-    textDecoration: 'none',
-    cursor: 'pointer',
-    transition: 'color 0.2s ease',
-    gap: '10px',
-    padding: '10px 20px 10px 40px', // Dashboard icon and text padding
-    width: '100%',
-    justifyContent: 'flex-start',
-  },
-  navIcon: {
-    fontSize: '18px',
-  },
-  logoutContainer: {
-    padding: '20px',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  logoutButton: {
-    display: 'flex',
-    alignItems: 'center',
-    fontWeight: 'bold',
-    color: '#dc3545',
-    fontSize: '15px',
-    textDecoration: 'none',
-    gap: '10px',
-    cursor: 'pointer',
-    transition: 'color 0.2s ease',
-    padding: '25px 25px',
-    width: '100%',
-    justifyContent: 'flex-start',
-  },
 };
 
 export default CaretakerSidebar;
