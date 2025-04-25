@@ -3,7 +3,12 @@ import { Login, Dashboard, DashboardAdmin } from "./pages"
 import {
   createBrowserRouter,
   RouterProvider,
-} from "react-router";
+} from "react-router-dom";
+
+import Settings from "./components/Settings";
+import AdminCards from "./components/AdminCards";
+import Form from "./components/Form";
+import AddDeviceForm from "./components/AddDeviceForm";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +22,25 @@ const router = createBrowserRouter([
   {
     path: "/dashboardAdmin",
     element: <DashboardAdmin />,
+    children: [
+      {
+        path: "dashboardCards",
+        element: <AdminCards />,
+      },
+      {
+        path: "manageCaretakers",
+        element: <Form />,
+      },
+      {
+        path: "manageDevices",
+        element: <AddDeviceForm />,
+      },
+      {
+        path: "settings",
+        element: <Settings />, 
+      }
+    ],
+
   },
 ]);
 
