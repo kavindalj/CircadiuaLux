@@ -1,9 +1,7 @@
 import React from 'react'
 import Nav from "../components/Nav";
-import Form from "../components/Form"
-import PasswordChangeForm from "../components/PasswordChangeForm"
-import AddDeviceForm from "../components/AddDeviceForm"
 import AdminSidebar from '@/components/AdminSidebar';
+import { Outlet } from 'react-router-dom';
 
 const DashboardAdmin = () => {
   return (
@@ -20,8 +18,8 @@ const DashboardAdmin = () => {
           <AdminSidebar />
         </div>
 
-        <main className='flex-1 p-6 overflow-auto flex justify-center items-center'>
-          <PasswordChangeForm />
+        <main className='flex-1 p-6 overflow-auto flex justify-center'>
+          <Outlet />
         </main>
       </div>
     </div>
