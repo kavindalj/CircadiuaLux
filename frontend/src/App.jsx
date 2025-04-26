@@ -1,8 +1,29 @@
-function App() {
+import React from "react"
+import { Login, Dashboard, DashboardAdmin } from "./pages"
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Login />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "/dashboardAdmin",
+    element: <DashboardAdmin />,
+  },
+]);
+
+const App = () => {
   return (
     <>
-      <h1 className="text-7xl font-bold">hello world</h1>
+      <RouterProvider router={router} />
     </>
   )
 }
