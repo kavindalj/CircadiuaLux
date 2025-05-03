@@ -5,10 +5,10 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import Settings from "./components/Settings";
 import AdminCards from "./components/AdminCards";
 import Form from "./components/Form";
 import AddDeviceForm from "./components/AddDeviceForm";
+import PasswordChangeForm from "./components/PasswordChangeForm";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     element: <DashboardAdmin />,
     children: [
       {
-        path: "dashboardCards",
+        index: true,
         element: <AdminCards />,
       },
       {
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: "settings",
-        element: <Settings />, 
+        element: <PasswordChangeForm />, 
       }
     ],
 

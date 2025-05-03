@@ -18,7 +18,7 @@ const DashboardAdmin = () => {
           <AdminSidebar />
         </div>
 
-        <main className='flex-1 p-6 overflow-auto flex justify-center'>
+        <main className='flex-1 p-6 overflow-auto flex justify-center '>
           <Outlet />
         </main>
       </div>
