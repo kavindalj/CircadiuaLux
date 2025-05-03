@@ -2,6 +2,7 @@ import React from 'react';
 import Nav from "../components/Nav";
 import AllPatientsForm from '@/components/AllPatientsForm';
 import CaretakerSidebar from '@/components/CaretakerSidebar';
+import AllDevicesForm from '../components/AllDevicesForm';
 
 const CaretakerDashboard = () => {
   return (
@@ -21,7 +22,7 @@ const CaretakerDashboard = () => {
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 pt-22 pr-8 pb-4 pl-36 overflow-auto">
-            <AllPatientsForm />
+            <AllDevicesForm />
           </div>
         </div>
       </div>
