@@ -6,7 +6,12 @@ const AllDevicesForm = () => {
         <div className="bg-white pt-8 pr-8 pb-8 pl-8 rounded-lg shadow-lg w-[950px] text-left">
 
             {/* Header Section */}
-            <h2 className="text-2xl font-bold mb-6">All Devices</h2>
+            <div className="flex items-center justify-between mb-6">
+                <h2 className="text-left text-xl font-bold mb-1">All Devices</h2>
+                <button className="bg-sky-500 text-white font-bold px-10 py-1.5 rounded hover:bg-sky-600 transition">
+                    Add Device
+                </button>
+            </div>
 
             {/* Table Headers */}
             <div className="flex text-sm font-semibold text-gray-400 border-b pb-3 ">
