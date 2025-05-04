@@ -1,6 +1,6 @@
 import React from 'react';
 import Nav from "../components/Nav";
-import AllPatientsForm from '@/components/AllPatientsForm';
+import AddPatientForm from '@/components/AddPatientForm';
 import CaretakerSidebar from '@/components/CaretakerSidebar';
 import AllDevicesForm from '../components/AllDevicesForm';
 
@@ -18,16 +18,12 @@ const CaretakerDashboard = () => {
         <div style={{ width: '200px' }}>
           <CaretakerSidebar />
         </div>
-
         {/* Main Content */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="flex-1 pt-22 pr-8 pb-4 pl-36 overflow-auto">
-            <AllDevicesForm />
-          </div>
-        </div>
+        <main className='flex-1 p-6 overflow-auto flex justify-center items-center'>
+          <AddPatientForm/>
+        </main>
       </div>
     </div>
   );
 };
-
 export default CaretakerDashboard;
