@@ -14,15 +14,15 @@ import AddUserForm from "./components/AddUserForm";
 import PatientDeviceDetails from "./components/PatientDeviceDetails";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Login />,
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
-  },
-  {
+    {
+      path: "/",
+      element: <Login />,
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
+    },
+    {
     path: "/dashboardAdmin",
     element: <DashboardAdmin />,
     children: [
