@@ -12,6 +12,8 @@ import AllDevicesTable from "./components/AllDevicesTable";
 import AddDeviceForm from "./components/AddDeviceForm";
 import AddUserForm from "./components/AddUserForm";
 import PatientDeviceDetails from "./components/PatientDeviceDetails";
+import AllPatientsTable from "./components/AllPatientsTable";
+import CaretakerCards from "./components/CaretakerCards";
 
 const router = createBrowserRouter([
     {
@@ -21,42 +23,55 @@ const router = createBrowserRouter([
     {
       path: "/dashboard",
       element: <Dashboard />,
+      children: [
+        {
+          index: true,
+          element: <CaretakerCards />,
+        },
+        {
+          path: "patientDetails",
+          element: <AllPatientsTable/>,
+        },
+        {
+          path: "settings",
+          element: <PasswordChangeForm />,
+        },
+      ]
     },
     {
-    path: "/dashboardAdmin",
-    element: <DashboardAdmin />,
-    children: [
-      {
-        index: true,
-        element: <AdminCards />,
-      },
-      {
-        path: "manageUsers",
-        element: <AllUsersTable />,
-      },
-      {
-        path: "addUser",
-        element: <AddUserForm />,
-      },
-      {
-        path: "manageDevices",
-        element: <AllDevicesTable />,
-      },
-      {
-        path: "seeMoreDevice",
-        element: <PatientDeviceDetails />,
-      },
-      {
-        path: "addDevice",
-        element: <AddDeviceForm />,
-      },
-      {
-        path: "settings",
-        element: <PasswordChangeForm />, 
-      }
-    ],
-
-  },
+      path: "/dashboardAdmin",
+      element: <DashboardAdmin />,
+      children: [
+        {
+          index: true,
+          element: <AdminCards />,
+        },
+        {
+          path: "manageUsers",
+          element: <AllUsersTable />,
+        },
+        {
+          path: "addUser",
+          element: <AddUserForm />,
+        },
+        {
+          path: "manageDevices",
+          element: <AllDevicesTable />,
+        },
+        {
+          path: "seeMoreDevice",
+          element: <PatientDeviceDetails />,
+        },
+        {
+          path: "addDevice",
+          element: <AddDeviceForm />,
+        },
+        {
+          path: "settings",
+          element: <PasswordChangeForm />, 
+        }
+      ],
+    },
 ]);
 
 const App = () => {
