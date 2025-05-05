@@ -14,6 +14,7 @@ import AddUserForm from "./components/AddUserForm";
 import PatientDeviceDetails from "./components/PatientDeviceDetails";
 import AllPatientsTable from "./components/AllPatientsTable";
 import CaretakerCards from "./components/CaretakerCards";
+import AddPatientForm from "./components/AddPatientForm";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,14 @@ const router = createBrowserRouter([
         {
           path: "patientDetails",
           element: <AllPatientsTable/>,
+        },
+        {
+          path: "addPatient",
+          element: <AddPatientForm/>,
+        },
+        {
+          path: "seeMorePatient",
+          element: <PatientDeviceDetails />,
         },
         {
           path: "settings",

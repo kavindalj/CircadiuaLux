@@ -1,9 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PatientDetailsRow = () => {
-    const handleSeeMore = () => {
-        alert('Viewing more details...');
-    };
+    const navigate = useNavigate();
 
     // Example status - in a real application, this would be passed as a prop
     const status = "Admitted"; // Or "Discharged", or any other value
@@ -29,7 +28,7 @@ const PatientDetailsRow = () => {
             </div>
             <div
                 className="w-1/5 text-sky-500 cursor-pointer hover:underline text-right"
-                onClick={handleSeeMore}
+                onClick={() => navigate('/dashboard/seeMorePatient')}
             >
                 See more &gt;&gt;
             </div>
