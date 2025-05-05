@@ -1,14 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserDetailsRow from './UserDetailsRow';
 
-const AllUsersForm = () => {
+const AllUsersTable = () => {
+
+    const navigate = useNavigate();
+
     return (
         <div className="bg-white pt-8 pr-8 pb-8 pl-8 rounded-lg shadow-lg w-[860px] text-left">
 
             {/* Header Section */}
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-left text-xl font-bold mb-2">All Users</h2>
-                <button className="bg-sky-500 cursor-pointer text-white font-bold px-6 py-1 rounded hover:bg-sky-600 transition">
+                <button 
+                    className="bg-sky-500 cursor-pointer text-white font-bold px-6 py-1 rounded hover:bg-sky-600 transition"
+                    onClick={() => navigate('/dashboardAdmin/addUser')}
+                >
                     Add User
                 </button>
             </div>
@@ -30,4 +37,4 @@ const AllUsersForm = () => {
     );
 };
 
-export default AllUsersForm;
+export default AllUsersTable;

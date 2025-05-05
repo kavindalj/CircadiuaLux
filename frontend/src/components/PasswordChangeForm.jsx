@@ -96,7 +96,7 @@ function PasswordChangeForm() {
            <p className="text-red-600 text-sm mt-4 text-left ">{formError.pass3}</p>
            <button 
             type="submit"
-            className="w-full mt-5 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
+            className="w-full mt-3 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
           >
             Save password
           </button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const PatientDetailsForm = () => {
+const PatientDeviceDetails = () => {
   const [activeForm, setActiveForm] = useState("patient");
 
   // Style classes for active and inactive buttons
@@ -79,4 +79,4 @@ const PatientDetailsForm = () => {
   );
 };
 
-export default PatientDetailsForm;
+export default PatientDeviceDetails;

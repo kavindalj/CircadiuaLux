@@ -1,14 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import DeviceDetailsRow from './DeviceDetailsRow';
 
-const AllDevicesForm = () => {
+const AllDevicesTable = () => {
+
+    const navigate = useNavigate();
+
     return (
         <div className="bg-white pt-8 pr-8 pb-8 pl-8 rounded-lg shadow-lg w-[950px] text-left">
 
             {/* Header Section */}
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-left text-xl font-bold mb-1">All Devices</h2>
-                <button className="bg-sky-500 text-white font-bold px-10 py-1.5 rounded hover:bg-sky-600 transition">
+                <button 
+                    className="bg-sky-500 text-white font-bold px-10 py-1.5 rounded hover:bg-sky-600 transition"
+                    onClick={() => navigate('/dashboardAdmin/addDevice')}
+                >
                     Add Device
                 </button>
             </div>
@@ -32,4 +39,4 @@ const AllDevicesForm = () => {
     );
 };
 
-export default AllDevicesForm;
+export default AllDevicesTable;
