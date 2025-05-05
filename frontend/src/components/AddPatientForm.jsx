@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 
-const FormSection = ({ title, fields, formData, setFormData, errors }) => {
-  // Block number input on keypress
+const FormSection = ({ title, fields, formData, setFormData, errors, setErrors }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    const stringOnlyFields = ["Name", "Symptoms", "Disease Description"];
 
-    const noNumbersFields = ["Name", "Symptoms", "Disease Description"];
-
-    if (noNumbersFields.includes(name)) {
-      const onlyLetters = value.replace(/[^A-Za-z\s]/g, ""); // Remove numbers/symbols
+    if (stringOnlyFields.includes(name)) {
+      const onlyLetters = value.replace(/[^A-Za-z\s]/g, "");
       setFormData({ ...formData, [name]: onlyLetters });
+
+      if (/[^A-Za-z\s]/.test(value)) {
+        setErrors((prev) => ({ ...prev, [name]: "Only letters are allowed." }));
+      } else {
+        const { [name]: removed, ...rest } = errors;
+        setErrors(rest);
+      }
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -33,9 +38,7 @@ const FormSection = ({ title, fields, formData, setFormData, errors }) => {
               >
                 <option value="">{field.placeholder}</option>
                 {field.options.map((option, idx) => (
-                  <option key={idx} value={option}>
-                    {option}
-                  </option>
+                  <option key={idx} value={option}>{option}</option>
                 ))}
               </select>
             ) : (
@@ -62,34 +65,27 @@ const AddPatientForm = () => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
 
-  const isValidString = (value) => {
-    return typeof value === "string" && /^[A-Za-z\s]+$/.test(value.trim());
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!isValidString(formData["Name"])) {
-      newErrors["Name"] = "Only letters are allowed.";
-    }
-    if (!isValidString(formData["Symptoms"])) {
-      newErrors["Symptoms"] = "Only letters are allowed.";
-    }
-    if (!isValidString(formData["Disease Description"])) {
-      newErrors["Disease Description"] = "Only letters are allowed.";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = () => {
-    if (validateForm()) {
-      alert("Patient added successfully!");
-      console.log("Submitted data:", formData);
-      setFormData({});
-      setErrors({});
+    const requiredFields = [
+      "Name", "Gender", "Age", "Room Number",
+      "Disease Type", "Disease Description", "mm/dd/yy", "Symptoms",
+      "Wakeup Time", "Person Type"
+    ];
+
+    const emptyFields = requiredFields.filter(field => !formData[field] || formData[field].trim() === "");
+
+    if (emptyFields.length > 0) {
+      alert("⚠️ Please fill in all fields before submitting.");
+      return;
     }
+    
+    if (Object.keys(errors).length === 0) {
+      alert("✅ Patient added successfully!");
+      console.log("Submitted:", formData);
+      setFormData({});
+    } else {
+      alert("❌ Please fix the errors before submitting.");
+    }    
   };
 
   const patientDetails = [
@@ -121,6 +117,7 @@ const AddPatientForm = () => {
             formData={formData}
             setFormData={setFormData}
             errors={errors}
+            setErrors={setErrors}
           />
           <FormSection
             title="Disease Information"
@@ -128,6 +125,7 @@ const AddPatientForm = () => {
             formData={formData}
             setFormData={setFormData}
             errors={errors}
+            setErrors={setErrors}
           />
           <FormSection
             title="Sleeping Details"
@@ -135,6 +133,7 @@ const AddPatientForm = () => {
             formData={formData}
             setFormData={setFormData}
             errors={errors}
+            setErrors={setErrors}
           />
         </div>
         <div className="flex justify-center mt-4 mb-2">
