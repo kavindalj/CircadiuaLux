@@ -1,9 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DeviceDetailsRow = () => {
-    const handleSeeMore = () => {
-        alert('Viewing more details...');
-    };
+
+    const navigate = useNavigate();
 
     return (
         <div className="flex items-center border-b py-3 px-4 hover:bg-gray-50 transition duration-150">
@@ -19,7 +19,7 @@ const DeviceDetailsRow = () => {
                 #####
                 <span
                     className="text-sky-500 cursor-pointer hover:underline ml-2"
-                    onClick={handleSeeMore}
+                    onClick={() => navigate('/dashboardAdmin/seeMoreDevice')}
                 >
                     See More &gt;&gt;
                 </span>

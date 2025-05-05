@@ -1,9 +1,9 @@
 import React from 'react';
 import Nav from "../components/Nav";
-import AddPatientForm from '@/components/AddPatientForm';
+
 import CaretakerSidebar from '@/components/CaretakerSidebar';
-import AllDevicesForm from '../components/AllDevicesForm';
-import AllUsersForm from '@/components/AllUsersForm';
+
+import AllUsersTable from '@/components/AllUsersTable';
 
 const CaretakerDashboard = () => {
   return (
@@ -21,7 +21,7 @@ const CaretakerDashboard = () => {
         </div>
         {/* Main Content */}
         <main className='flex-1 p-6 overflow-auto flex justify-center items-center'>
-          <AllUsersForm/>
+          <AllUsersTable/>
         </main>
       </div>
     </div>

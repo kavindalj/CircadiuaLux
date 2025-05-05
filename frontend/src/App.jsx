@@ -6,9 +6,12 @@ import {
 } from "react-router-dom";
 
 import AdminCards from "./components/AdminCards";
-import Form from "./components/Form";
-import AddDeviceForm from "./components/AddDeviceForm";
 import PasswordChangeForm from "./components/PasswordChangeForm";
+import AllUsersTable from "./components/AllUsersTable";
+import AllDevicesTable from "./components/AllDevicesTable";
+import AddDeviceForm from "./components/AddDeviceForm";
+import AddUserForm from "./components/AddUserForm";
+import PatientDeviceDetails from "./components/PatientDeviceDetails";
 
 const router = createBrowserRouter([
   {
@@ -28,11 +31,23 @@ const router = createBrowserRouter([
         element: <AdminCards />,
       },
       {
-        path: "manageCaretakers",
-        element: <Form />,
+        path: "manageUsers",
+        element: <AllUsersTable />,
+      },
+      {
+        path: "addUser",
+        element: <AddUserForm />,
       },
       {
         path: "manageDevices",
+        element: <AllDevicesTable />,
+      },
+      {
+        path: "seeMoreDevice",
+        element: <PatientDeviceDetails />,
+      },
+      {
+        path: "addDevice",
         element: <AddDeviceForm />,
       },
       {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PatientDetailsRow from './PatientDetailsRow';
 
-const AllPatientsForm = () => {
+const AllPatientsTable = () => {
     return (
         <div className="bg-white p-8 rounded-lg shadow-lg w-[1000px] text-center">
             {/* Header Section */}
@@ -30,4 +30,4 @@ const AllPatientsForm = () => {
     );
 };
 
-export default AllPatientsForm;
+export default AllPatientsTable;

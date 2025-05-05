@@ -7,7 +7,7 @@ const AdminSidebar = () => {
 
     const navItems = [
         { label: 'Dashboard', icon: MdDashboard, link: '/dashboardAdmin' },
-        { label: 'Manage Caretakers', icon: MdPeople, link: '/dashboardAdmin/manageCaretakers' },
+        { label: 'Manage Users', icon: MdPeople, link: '/dashboardAdmin/manageUsers' },
         { label: 'Manage Devices', icon: MdDevices, link: '/dashboardAdmin/manageDevices' },
         { label: 'Settings', icon: MdSettings, link: '/dashboardAdmin/settings' },
     ];
