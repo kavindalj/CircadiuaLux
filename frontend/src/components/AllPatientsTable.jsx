@@ -1,13 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import PatientDetailsRow from './PatientDetailsRow';
 
 const AllPatientsTable = () => {
+
+    const navigate = useNavigate();
+
     return (
         <div className="bg-white p-8 rounded-lg shadow-lg w-[1000px] text-center">
             {/* Header Section */}
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-left text-xl font-bold mb-1">Patient Details</h2>
-                <button className="bg-sky-500 text-white font-bold px-10 py-2 rounded hover:bg-sky-600 transition">
+                <button 
+                    className="bg-sky-500 text-white font-bold px-10 py-2 rounded hover:bg-sky-600 transition"
+                    onClick={() => navigate('/dashboard/addPatient')}
+                >
                     Add Patient
                 </button>
             </div>
