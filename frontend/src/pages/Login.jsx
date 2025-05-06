@@ -57,7 +57,7 @@ const Login = () => {
         <div className="flex border-b-2 border-gray-300 mb-4">
           <button
             className={`flex-1 py-2 font-bold cursor-pointer ${role === "admin"
-              ? "text-black border-b-2 border-[#1CAC78]"
+              ? "text-black border-b-2 border-[#34A8DD]"
               : "text-gray-500"
               }`}
             onClick={() => setRole("admin")}
@@ -109,18 +109,14 @@ const Login = () => {
           </div>
 
           <div
-            className={`text-right text-xs cursor-pointer mb-3 ${role === "admin" ? "text-[#1CAC78]" : "text-[#34A8DD]"
-              }`}
+            className={"text-right text-xs cursor-pointer mb-3 text-[#34A8DD]"}
           >
             Forgot your password?
           </div>
 
           <button
             type="submit"
-            className={`w-full py-2 font-bold text-white rounded-md cursor-pointer transition-all ${role === "admin"
-              ? "bg-[#1CAC78] hover:bg-[#099662]"
-              : "bg-[#34A8DD] hover:bg-[#056c9c]"
-              }`}
+            className={"w-full py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"}
           >
             {role === "admin" ? "Admin Login" : "Caretaker Login"}
           </button>
