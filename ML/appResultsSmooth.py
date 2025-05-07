@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 import joblib
 
 # Load model and scaler
-model = joblib.load("models/lighting_model3.pkl")
-scaler_y = joblib.load("models/lscaler_y3.pkl")
+model = joblib.load("models/model_1.0.pkl")
+scaler_y = joblib.load("models/scaler_1.0.pkl")
 
 # Chronotype mapping
 chronotype_map = {

@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 import joblib
 
 # Load from the models folder
-model = joblib.load("models/lighting_model3.pkl")
-scaler_y = joblib.load("models/lscaler_y3.pkl")
+model = joblib.load("models/model_1.0.pkl")
+scaler_y = joblib.load("models/scaler_1.0.pkl")
 
 chronotype_map = {
     "Definitely a morning type": 0,
@@ -98,9 +98,9 @@ results = []
 for i in range(48):  # 48 half-hour increments in 24 hours
     current_time = (start_time + i * time_interval).strftime("%H:%M")
     output = predict_lighting(
-        age=55,
+        age=25,
         sex='Male',
-        chronotype='Definitely a morning type',
+        chronotype='Definitely an evening type',
         sleepDuration_str='05:30',
         wake_time_str='07:30',
         current_time_str=current_time,
