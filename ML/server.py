@@ -62,7 +62,7 @@ def predict_lighting(age, sex, chronotype, sleepDuration_str, wake_time_str, cur
         'CCT_estimated': round(cct_estimated)
     }
 
-def smooth_predictions(results):
+def smooth_predictions(patient_id, results):
     times = [t for t, _ in results]
     photopic = [res['PhotopicLux'] for _, res in results]
     mel = [res['mel_ratio'] for _, res in results]
@@ -78,6 +78,7 @@ def smooth_predictions(results):
     smoothed_results = []
     for i, time_str in enumerate(times):
         smoothed_results.append({
+            'patient_id': patient_id,
             'Time': time_str,
             'PhotopicLux': float(round(photopic_smooth[i], 2)),
             'mel_ratio': float(round(mel_smooth[i], 3)),
@@ -95,17 +96,20 @@ def predict():
     record = data.get("record", {})
 
     # Validate required fields
-    required_fields = ["age", "gender", "wake_time", "chronotype", "sleep_duration"]
+    required_fields = ["id", "age", "gender", "wake_time", "chronotype", "sleep_duration"]
     if not all(field in record for field in required_fields):
         return jsonify({"error": "Missing required patient fields"}), 400
 
     try:
         # Extract patient info
+        patient_id = record["id"]
         age = record["age"]
         sex = record["gender"]
         chronotype = record["chronotype"]
         wake_time = record["wake_time"]
         sleep_duration = record["sleep_duration"]
+
+        print(patient_id, age, sex, chronotype, wake_time, sleep_duration)
 
         # Use current date to simulate daily prediction
         def generate_custom_predictions():
@@ -128,7 +132,7 @@ def predict():
             return results
 
         predictions = generate_custom_predictions()
-        smoothed = smooth_predictions(predictions)
+        smoothed = smooth_predictions(patient_id, predictions)
 
         print(smoothed)
 
