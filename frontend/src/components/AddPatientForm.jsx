@@ -1,150 +1,204 @@
 import React, { useState } from "react";
 
-const FormSection = ({ title, fields, formData, setFormData, errors, setErrors }) => {
-  const handleInputChange = (e) => {
+const AddPatientForm = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    age: "",
+    gender: "",
+    roomNumber: "",
+    sleepDuration: "",
+    wakeUpTime: "",
+    personType: "",
+    diseaseType: "",
+    symptoms: "",
+    diseaseDescription: "",
+  });
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    const stringOnlyFields = ["Name", "Symptoms", "Disease Description"];
 
+    const stringOnlyFields = ["name", "symptoms", "diseaseDescription"];
     if (stringOnlyFields.includes(name)) {
-      const onlyLetters = value.replace(/[^A-Za-z\s]/g, "");
-      setFormData({ ...formData, [name]: onlyLetters });
-
-      if (/[^A-Za-z\s]/.test(value)) {
-        setErrors((prev) => ({ ...prev, [name]: "Only letters are allowed." }));
-      } else {
-        const { [name]: removed, ...rest } = errors;
-        setErrors(rest);
-      }
+      const lettersOnly = value.replace(/[^A-Za-z\s]/g, "");
+      setFormData({ ...formData, [name]: lettersOnly });
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  return (
-    <div className="p-4 rounded-2xl shadow-md w-full max-w-lg">
-      <h2 className="text-xl font-bold mb-4 text-center">{title}</h2>
-      <form className="space-y-4">
-        {fields.map((field, index) => (
-          <div key={index}>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {field.label}
-            </label>
-            {field.type === "select" ? (
-              <select
-                name={field.label}
-                value={formData[field.label] || ""}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 p-2 rounded text-gray-500 font-semibold"
-              >
-                <option value="">{field.placeholder}</option>
-                {field.options.map((option, idx) => (
-                  <option key={idx} value={option}>{option}</option>
-                ))}
-              </select>
-            ) : (
-              <input
-                type={field.type}
-                name={field.label}
-                placeholder={field.placeholder}
-                value={formData[field.label] || ""}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 p-2 rounded placeholder-gray-500 placeholder:font-semibold"
-              />
-            )}
-            {errors[field.label] && (
-              <p className="text-red-500 text-sm mt-1">{errors[field.label]}</p>
-            )}
-          </div>
-        ))}
-      </form>
-    </div>
-  );
-};
-
-const AddPatientForm = () => {
-  const [formData, setFormData] = useState({});
-  const [errors, setErrors] = useState({});
-
-  const handleSubmit = () => {
-    const requiredFields = [
-      "Name", "Gender", "Age", "Room Number",
-      "Disease Type", "Disease Description", "mm/dd/yy", "Symptoms",
-      "Wakeup Time", "Person Type"
-    ];
-
-    const emptyFields = requiredFields.filter(field => !formData[field] || formData[field].trim() === "");
-
-    if (emptyFields.length > 0) {
-      alert("⚠️ Please fill in all fields before submitting.");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const isEmpty = Object.values(formData).some((val) => val === "");
+    if (isEmpty) {
+      alert("Please fill all fields!");
       return;
     }
-    
-    if (Object.keys(errors).length === 0) {
-      alert("✅ Patient added successfully!");
-      console.log("Submitted:", formData);
-      setFormData({});
-    } else {
-      alert("❌ Please fix the errors before submitting.");
-    }    
+    alert("Patient added successfully!");
+    console.log("Submitted:", formData);
   };
 
-  const patientDetails = [
-    { label: "Name", type: "text", placeholder: "Enter Name" },
-    { label: "Gender", type: "select", placeholder: "Select Gender", options: ["Male", "Female", "Other"] },
-    { label: "Age", type: "number", placeholder: "Enter Age" },
-    { label: "Room Number", type: "select", placeholder: "Select Room Number", options: ["101", "102", "103"] },
-  ];
-
-  const diseaseInfo = [
-    { label: "Disease Type", type: "select", placeholder: "Select Disease Type", options: ["Diabetes", "Cholesterol", "Flu", "Allergy"] },
-    { label: "Disease Description", type: "text", placeholder: "Enter Description" },
-    { label: "mm/dd/yy", type: "date", placeholder: "Enter Date" },
-    { label: "Symptoms", type: "text", placeholder: "Enter Symptoms" },
-  ];
-
-  const sleepingDetails = [
-    { label: "Wakeup Time", type: "time", placeholder: "Select Wakeup Time" },
-    { label: "Person Type", type: "select", placeholder: "Select Person Type", options: ["Early Riser", "Night Owl"] },
-  ];
-
   return (
-    <div className="flex flex-col px-4 pt-0">
-      <div className="w-full max-w-7xl">
-        <div className="grid md:grid-cols-3 gap-8 justify-center">
-          <FormSection
-            title="Patient Details"
-            fields={patientDetails}
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-            setErrors={setErrors}
-          />
-          <FormSection
-            title="Disease Information"
-            fields={diseaseInfo}
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-            setErrors={setErrors}
-          />
-          <FormSection
-            title="Sleeping Details"
-            fields={sleepingDetails}
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-            setErrors={setErrors}
-          />
+    <div className="flex justify-center items-start py-6 px-4 min-h-[75vh]">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-4 rounded-md shadow-md w-full max-w-lg space-y-1.5 min-h-[100px]"
+      >
+        {/* Top Title */}
+        <div>
+          <h2 className="text-left text-xl font-bold">Patient’s Information</h2>
+          <p className="text-sm text-gray-500 text-left mb-4">
+            Provide the necessary person’s information, disease details, and sleep information.
+          </p>
         </div>
-        <div className="flex justify-center mt-4 mb-2">
+
+        {/* Patient Information */}
+        <div className="space-y-1.5">
+          <h3 className="font-medium text-sm text-black">Patient Information</h3>
+          <div className="grid grid-cols-2 gap-3">
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="p-1.5 text-sm border rounded-md border-gray-300"
+            />
+            <input
+              type="number"
+              name="age"
+              placeholder="Age"
+              value={formData.age}
+              onChange={handleChange}
+              className="p-1.5 text-sm border rounded-md border-gray-300 "
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              className="p-1.5 rounded-md text-sm border border-gray-300 text-gray-500"
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <input
+              type="text"
+              name="roomNumber"
+              placeholder="Room Number"
+              value={formData.roomNumber}
+              onChange={handleChange}
+              className="p-1.5 text-sm border rounded-md border-gray-300"
+            />
+          </div>
+        </div>
+
+       {/* Sleep Information */}
+<div className="space-y-1.5">
+  <h3 className="font-medium text-sm text-black">Sleep Information</h3>
+  <div className="grid grid-cols-3 gap-3">
+    <select
+      name="sleepDuration"
+      value={formData.sleepDuration}
+      onChange={handleChange}
+      className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
+    >
+      <option value="">Sleep Duration</option>
+      {Array.from({ length: 144 }, (_, i) => {
+        const hours = String(Math.floor(i / 6)).padStart(2, '0');
+        const minutes = String((i % 6) * 10).padStart(2, '0');
+        return (
+          <option key={`duration-${i}`} value={`${hours}:${minutes}`}>
+            {hours}:{minutes}
+          </option>
+        );
+      })}
+    </select>
+
+    <select
+      name="wakeUpTime"
+      value={formData.wakeUpTime}
+      onChange={handleChange}
+      className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
+    >
+      <option value="">Wake Up Time</option>
+      {Array.from({ length: 144 }, (_, i) => {
+        const hours = String(Math.floor(i / 6)).padStart(2, '0');
+        const minutes = String((i % 6) * 10).padStart(2, '0');
+        return (
+          <option key={`wake-${i}`} value={`${hours}:${minutes}`}>
+            {hours}:{minutes}
+          </option>
+        );
+      })}
+    </select>
+
+    <select
+      name="personType"
+      value={formData.personType}
+      onChange={handleChange}
+      className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
+    >
+      <option value="">Person Type</option>
+      <option value="Definitely a morning type">Definitely a morning type</option>
+      <option value="Rather more a morning type than an evening type">
+        Rather more a morning type than an evening type
+      </option>
+      <option value="Rather more an evening type than a morning type">
+        Rather more an evening type than a morning type
+      </option>
+      <option value="Definitely an evening type">Definitely an evening type</option>
+    </select>
+  </div>
+</div>
+
+        {/* Disease Information */}
+        <div className="space-y-1.5">
+          <h3 className="font-medium text-sm text-black">Disease Information</h3>
+          <div className="grid grid-cols-2 gap-3">
+            <select
+              name="diseaseType"
+              value={formData.diseaseType}
+              onChange={handleChange}
+              className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
+            >
+              <option value="">Select Disease Type</option>
+              <option value="Diabetes">Diabetes</option>
+              <option value="Cholesterol">Cholesterol</option>
+              <option value="Asthma">Asthma</option>
+              <option value="Flu">Flu</option>
+              <option value="Other">Other</option>
+            </select>
+            <input
+              type="text"
+              name="symptoms"
+              placeholder="Symptoms"
+              value={formData.symptoms}
+              onChange={handleChange}
+              className="p-1.5 text-sm border rounded-md border-gray-300"
+            />
+          </div>
+          <textarea
+            name="diseaseDescription"
+            placeholder="Disease Description"
+            value={formData.diseaseDescription}
+            onChange={handleChange}
+            className="w-full p-2 text-sm border rounded-md border-gray-300 rounded resize-none"
+            rows={2}
+          ></textarea>
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex justify-center">
           <button
-            onClick={handleSubmit}
-            className="bg-[#34A8DD] text-white px-6 py-2 rounded hover:bg-[#2b96c5] transition w-full max-w-4xl cursor-pointer"
+            type="submit"
+            className="w-full mt-4 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
           >
             Add Patient
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
