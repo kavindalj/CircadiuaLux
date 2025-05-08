@@ -38,22 +38,22 @@ const AddPatientForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-start py-6 px-4 min-h-[75vh]">
+    <div className="flex justify-center items-start py-8 px-4 min-h-[60vh]">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-4 rounded-md shadow-md w-full max-w-lg space-y-1.5 min-h-[100px]"
       >
         {/* Top Title */}
         <div>
-          <h2 className="text-left text-xl font-bold">Patient’s Information</h2>
-          <p className="text-sm text-gray-500 text-left mb-4">
+          <h2 className="text-left text-2xl font-bold">Patient’s Information</h2>
+          <p className="text-sm text-gray-500 text-left mt-1">
             Provide the necessary person’s information, disease details, and sleep information.
           </p>
         </div>
 
         {/* Patient Information */}
         <div className="space-y-1.5">
-          <h3 className="font-medium text-sm text-black">Patient Information</h3>
+          <h3 className="font-medium mt-4 text-sm text-black">Patient Information</h3>
           <div className="grid grid-cols-2 gap-3">
             <input
               type="text"
@@ -69,7 +69,8 @@ const AddPatientForm = () => {
               placeholder="Age"
               value={formData.age}
               onChange={handleChange}
-              className="p-1.5 text-sm border rounded-md border-gray-300 "
+              min="1"
+              className="p-1.5 text-sm border rounded-md border-gray-300"
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -94,68 +95,68 @@ const AddPatientForm = () => {
           </div>
         </div>
 
-       {/* Sleep Information */}
-<div className="space-y-1.5">
-  <h3 className="font-medium text-sm text-black">Sleep Information</h3>
-  <div className="grid grid-cols-3 gap-3">
-    <select
-      name="sleepDuration"
-      value={formData.sleepDuration}
-      onChange={handleChange}
-      className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
-    >
-      <option value="">Sleep Duration</option>
-      {Array.from({ length: 144 }, (_, i) => {
-        const hours = String(Math.floor(i / 6)).padStart(2, '0');
-        const minutes = String((i % 6) * 10).padStart(2, '0');
-        return (
-          <option key={`duration-${i}`} value={`${hours}:${minutes}`}>
-            {hours}:{minutes}
-          </option>
-        );
-      })}
-    </select>
+        {/* Sleep Information */}
+        <div className="space-y-1.5">
+          <h3 className="font-medium mt-6 text-sm text-black">Sleep Information</h3>
+          <div className="grid grid-cols-3 gap-3">
+            <select
+              name="sleepDuration"
+              value={formData.sleepDuration}
+              onChange={handleChange}
+              className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
+            >
+              <option value="">Sleep Duration</option>
+              {Array.from({ length: 144 }, (_, i) => {
+                const hours = String(Math.floor(i / 6)).padStart(2, '0');
+                const minutes = String((i % 6) * 10).padStart(2, '0');
+                return (
+                  <option key={`duration-${i}`} value={`${hours}:${minutes}`}>
+                    {hours}:{minutes}
+                  </option>
+                );
+              })}
+            </select>
 
-    <select
-      name="wakeUpTime"
-      value={formData.wakeUpTime}
-      onChange={handleChange}
-      className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
-    >
-      <option value="">Wake Up Time</option>
-      {Array.from({ length: 144 }, (_, i) => {
-        const hours = String(Math.floor(i / 6)).padStart(2, '0');
-        const minutes = String((i % 6) * 10).padStart(2, '0');
-        return (
-          <option key={`wake-${i}`} value={`${hours}:${minutes}`}>
-            {hours}:{minutes}
-          </option>
-        );
-      })}
-    </select>
+            <select
+              name="wakeUpTime"
+              value={formData.wakeUpTime}
+              onChange={handleChange}
+              className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
+            >
+              <option value="">Wake Up Time</option>
+              {Array.from({ length: 144 }, (_, i) => {
+                const hours = String(Math.floor(i / 6)).padStart(2, '0');
+                const minutes = String((i % 6) * 10).padStart(2, '0');
+                return (
+                  <option key={`wake-${i}`} value={`${hours}:${minutes}`}>
+                    {hours}:{minutes}
+                  </option>
+                );
+              })}
+            </select>
 
-    <select
-      name="personType"
-      value={formData.personType}
-      onChange={handleChange}
-      className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
-    >
-      <option value="">Person Type</option>
-      <option value="Definitely a morning type">Definitely a morning type</option>
-      <option value="Rather more a morning type than an evening type">
-        Rather more a morning type than an evening type
-      </option>
-      <option value="Rather more an evening type than a morning type">
-        Rather more an evening type than a morning type
-      </option>
-      <option value="Definitely an evening type">Definitely an evening type</option>
-    </select>
-  </div>
-</div>
+            <select
+              name="personType"
+              value={formData.personType}
+              onChange={handleChange}
+              className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
+            >
+              <option value="">Person Type</option>
+              <option value="Definitely a morning type">Definitely a morning type</option>
+              <option value="Rather more a morning type than an evening type">
+                Rather more a morning type than an evening type
+              </option>
+              <option value="Rather more an evening type than a morning type">
+                Rather more an evening type than a morning type
+              </option>
+              <option value="Definitely an evening type">Definitely an evening type</option>
+            </select>
+          </div>
+        </div>
 
         {/* Disease Information */}
         <div className="space-y-1.5">
-          <h3 className="font-medium text-sm text-black">Disease Information</h3>
+          <h3 className="font-medium mt-6 text-sm text-black">Disease Information</h3>
           <div className="grid grid-cols-2 gap-3">
             <select
               name="diseaseType"
@@ -193,7 +194,7 @@ const AddPatientForm = () => {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="w-full mt-4 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
+            className="w-full mt-3 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
           >
             Add Patient
           </button>
