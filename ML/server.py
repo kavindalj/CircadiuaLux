@@ -5,10 +5,22 @@ from datetime import datetime, timedelta
 from scipy.interpolate import interp1d
 from scipy.signal import savgol_filter
 import joblib
+import os
+from dotenv import load_dotenv
+from supabase import create_client, Client
+
+load_dotenv()
+
+model_path = os.getenv("MODEL_PATH")
+scaler_path = os.getenv("SCALER_PATH")
+
+url = os.getenv("SUPABASE_URL")
+key = os.getenv("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
 
 # Load model and scaler
-model = joblib.load("models/model_1.0.pkl")
-scaler_y = joblib.load("models/scaler_1.0.pkl")
+model = joblib.load(model_path)
+scaler_y = joblib.load(scaler_path)
 
 # Chronotype mapping
 chronotype_map = {
@@ -79,7 +91,7 @@ def smooth_predictions(patient_id, results):
     for i, time_str in enumerate(times):
         smoothed_results.append({
             'patient_id': patient_id,
-            'Time': time_str,
+            'time': time_str,
             'PhotopicLux': float(round(photopic_smooth[i], 2)),
             'mel_ratio': float(round(mel_smooth[i], 3)),
             'CCT_estimated': int(round(cct_smooth[i]))
@@ -135,6 +147,10 @@ def predict():
         smoothed = smooth_predictions(patient_id, predictions)
 
         print(smoothed)
+
+        res = supabase.table("lighting_predictions") \
+            .upsert(smoothed, on_conflict=["patient_id,time"]) \
+            .execute()
 
         return jsonify({
             "status": "success",
