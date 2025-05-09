@@ -16,6 +16,9 @@
 *.log
 *.tmp
 
+# ignore env files
+.env
+
 # Ignore OS system files
 .DS_Store
 Thumbs.db
