@@ -11,11 +11,12 @@ const PatientDetailsRow = ({patientData}) => {
             <div className="w-1/5">{patientData.gender}</div>
             <div className="w-1/5">
                 <span
-                    className={`${patientData.patient_status === "Admitted"
+                    className={`w-[100px] inline-block text-center 
+                            ${patientData.patient_status.toLowerCase() === "admitted"
                             ? ` text-[#34A8DD] border-[#34A8DD]`
-                            : patientData.patient_status === "Discharged"
+                            : patientData.patient_status.toLowerCase() === "discharged"
                                 ? `text-[#DC2626] border-[#DC2626]`
-                                : "bg-gray-100 text-gray-600 border-gray-400"
+                                : "text-gray-600 border-gray-400"
                         } text-sm px-3 py-1 rounded border`}
                 >
                     {patientData.patient_status}
