@@ -5,9 +5,12 @@ function Modal({patientId, currentStatus, onClose, onStatusUpdated}) {
   const [newStatus, setNewStatus] = useState(currentStatus);
 
   const handleUpdate = async () => {
+
+    const formattedStatus = newStatus.charAt(0).toUpperCase() + newStatus.slice(1).toLowerCase();
+
     const {error} = await supabase
         .from('patients')
-        .update({patient_status: newStatus})
+        .update({patient_status: formattedStatus})
         .eq('id',patientId)
 
     if (error) {
