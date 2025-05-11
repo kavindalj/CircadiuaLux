@@ -15,6 +15,7 @@ import PatientDeviceDetails from "./components/PatientDeviceDetails";
 import AllPatientsTable from "./components/AllPatientsTable";
 import CaretakerCards from "./components/CaretakerCards";
 import AddPatientForm from "./components/AddPatientForm";
+import Modal from "./components/Modal";
 
 const router = createBrowserRouter([
     {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
           element: <PasswordChangeForm />, 
         }
       ],
+    },
+    {
+      path: "/Modal",
+      element: <Modal />,
     },
 ]);
 

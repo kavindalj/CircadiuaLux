@@ -16,7 +16,7 @@ const AllPatientsTable = () => {
         const fetchPatientsData = async () => {
             const { data,error } = await supabase
                 .from("patients")
-                .select("patient_name, room_no, gender, patient_status");
+                .select("id,patient_name, room_no, gender, patient_status");
 
                 if(error){
                     setFetchError("Could not fetch patient data");
