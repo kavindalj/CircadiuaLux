@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const PatientDeviceDetails = () => {
-  const [activeForm, setActiveForm] = useState("patient");
+  const location = useLocation();
+  const defaultForm = location.state?.defaultForm || 'patient';  // fallback to 'patient'
+  const [activeForm, setActiveForm] = useState(defaultForm);
 
   // Style classes for active and inactive buttons
   const activeTextColor = "text-black";

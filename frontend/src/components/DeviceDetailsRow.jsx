@@ -19,13 +19,14 @@ const DeviceDetailsRow = () => {
                 #####
                 <span
                     className="text-sky-500 cursor-pointer hover:underline ml-2"
-                    onClick={() => navigate('/dashboardAdmin/seeMoreDevice')}
+                    onClick={() => navigate('/dashboardAdmin/seeMoreDevice', { state: { defaultForm: 'lighting' }})
+                    }
                 >
                     See More &gt;&gt;
                 </span>
             </div>
         </div>
     );
-};
+}
 
 export default DeviceDetailsRow;
