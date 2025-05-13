@@ -21,7 +21,7 @@ const AllPatientsTable = () => {
             const { data,error } = await supabase
                 .from("patients")
                 .select("id,patient_name, room_no, gender, patient_status")
-                .order("id", { ascending: true });
+                .order("patient_name", { ascending: true });
 
                 if(error){
                     setFetchError("Could not fetch patient data");
