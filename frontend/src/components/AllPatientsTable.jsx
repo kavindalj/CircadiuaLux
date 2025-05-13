@@ -3,20 +3,25 @@ import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PatientDetailsRow from './PatientDetailsRow';
 import { supabase } from "../supabaseClient";
+import PatientsListPagination from './PatientsListPagination';
 
 const AllPatientsTable = () => {
 
     const navigate = useNavigate();
 
     const [fetchError, setFetchError] = useState(null)
-    const [patientsData, setpatientsData] = useState(null)
+    const [patientsData, setpatientsData] = useState([])
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const [patientsPerPage] = useState(7)
 
     //Fetch patent details
     useEffect(() => {
         const fetchPatientsData = async () => {
             const { data,error } = await supabase
                 .from("patients")
-                .select("id,patient_name, room_no, gender, patient_status");
+                .select("id,patient_name, room_no, gender, patient_status")
+                .order("id", { ascending: true });
 
                 if(error){
                     setFetchError("Could not fetch patient data");
@@ -31,6 +36,11 @@ const AllPatientsTable = () => {
         }
         fetchPatientsData();
     }, [])
+
+    //Pagination part
+    const lastPatientIndex = currentPage * patientsPerPage
+    const firstPatientIndex = lastPatientIndex - patientsPerPage
+    const currentPatients = patientsData.slice(firstPatientIndex, lastPatientIndex)
 
     return (
         <div className="bg-white p-8 rounded-lg shadow-lg w-[1000px] text-center">
@@ -55,10 +65,19 @@ const AllPatientsTable = () => {
 
             {fetchError && (<p>{fetchError}</p>)}
             {patientsData && (
-                <div>
-                    {patientsData.map(patientData => (
-                        <PatientDetailsRow key={patientData.id} patientData={patientData} />
-                    ))}
+                <div className="min-h-[430px] flex flex-col justify-between">
+                    <div>
+                        {currentPatients.map(patientData => (
+                            <PatientDetailsRow key={patientData.id} patientData={patientData} />
+                        ))}
+                    </div>
+
+                    <PatientsListPagination 
+                        totalPatients={patientsData.length} 
+                        patientsPerPage={patientsPerPage}
+                        setCurrentPage={setCurrentPage}
+                        currentPage={currentPage}
+                    />
                 </div>
             )}
         </div>
