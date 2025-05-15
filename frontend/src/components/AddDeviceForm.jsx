@@ -1,58 +1,126 @@
-import React from 'react'
+import React, { useState } from "react";
+import { supabase } from "../supabaseClient";
 
-function AddDeviceForm() {
+const AddDeviceForm = () => {
+  const [formData, setFormData] = useState({
+    device_id: "",
+    building_no: "",
+    floor_no: "",
+    room_no: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (
+      !formData.device_id.trim() ||
+      !formData.building_no.trim() ||
+      !formData.floor_no.trim() ||
+      !formData.room_no.trim()
+    ) {
+      alert("Please fill all fields!");
+      return;
+    }
+
+    const { error } = await supabase.from("devices").insert([
+      {
+        device_id: formData.device_id.trim(),
+        building_no: formData.building_no.trim(),
+        floor_no: formData.floor_no.trim(),
+        room_no: formData.room_no.trim(),
+        active_status: "Online",
+      },
+    ]);
+
+    if (error) {
+      alert("Error adding device: " + error.message);
+    } else {
+      alert("Device added successfully!");
+      setFormData({
+        device_id: "",
+        building_no: "",
+        floor_no: "",
+        room_no: "",
+      });
+    }
+  };
+
   return (
-    <div className="flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] text-center">
-        <p className="text-left text-xl font-bold mb-3">Add Device</p>
-        <form>
-          <div className="mb-3 text-left">
-            <label className="block font-semibold text-sm mb-1">Device ID</label>
-            <input 
-                type="text" 
-                name="name" 
-                required 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" 
-            />
-           </div>
-           <div className="mb-3 text-left">
-            <label className="block font-semibold text-sm mb-1">Building No</label>
-            <input 
-                type="text" 
-                name="bno" 
-                required 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" 
-            />
-           </div>
-           <div className="mb-3 text-left">
-            <label className="block font-semibold text-sm mb-1">Floor No</label>
-            <input 
-                type="text" 
-                name="fno" 
-                required 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" 
-            />
-           </div>
-           <div className="mb-3 text-left">
-            <label className="block font-semibold text-sm mb-1">Room No</label>
-            <input 
-                type="text" 
-                name="rno" 
-                required 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" 
-            />
-           </div>
-          <button 
-            type="submit"
-            className="w-full mt-5 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
-          >
-            Add Device
-          </button>
-        </form>
+    <div className="flex justify-center items-start py-8 px-4 min-h-[60vh]">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-md shadow-md w-full max-w-md space-y-4"
+      >
+        <h2 className="text-left text-2xl font-bold">Add Device</h2>
+        <p className="text-sm text-gray-500 text-left mb-4">
+          Provide device details including building, floor, and room number.
+        </p>
 
-      </div>
+        <div>
+          <label className="block mb-1 font-semibold text-sm">Device ID</label>
+          <input
+            type="text"
+            name="device_id"
+            value={formData.device_id}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 font-semibold text-sm">Building No</label>
+          <input
+            type="text"
+            name="building_no"
+            value={formData.building_no}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 font-semibold text-sm">Floor No</label>
+          <input
+            type="text"
+            name="floor_no"
+            value={formData.floor_no}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 font-semibold text-sm">Room No</label>
+          <input
+            type="text"
+            name="room_no"
+            value={formData.room_no}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full mt-4 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
+        >
+          Add Device
+        </button>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default AddDeviceForm
+export default AddDeviceForm;
