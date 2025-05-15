@@ -1,13 +1,49 @@
 import React from 'react';
+import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserDetailsRow from './UserDetailsRow';
+import { supabase } from "../supabaseClient";
+import UsersListPagination from './UsersListPagination';
 
 const AllUsersTable = () => {
 
     const navigate = useNavigate();
 
+    const [fetchError, setFetchError] = useState(null)
+    const [usersData, setusersData] = useState([])
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const [UsersPerPage] = useState(7)
+
+    //Fetch users details
+    useEffect(() => {
+        const fetchUsersData = async () => {
+            const { data,error } = await supabase
+                .from("user_profiles")
+                .select("id, role, full_name, email, phone")
+                .order("full_name", { ascending: true });
+    
+                if(error){
+                    setFetchError("Could not fetch patient data");
+                    setusersData(null);
+                    console.log("Error fetching: " , error);
+                }
+                if (data) {
+                    console.log("Fetched patients:", data);
+                    setusersData (data);
+                    setFetchError(null);
+                }
+        }
+        fetchUsersData();
+    }, []);
+
+    //Pagination part
+    const lastUserIndex = currentPage * UsersPerPage
+    const firstUserIndex = lastUserIndex - UsersPerPage
+    const currentUsers = usersData.slice(firstUserIndex, lastUserIndex)
+
     return (
-        <div className="bg-white pt-8 pr-8 pb-8 pl-8 rounded-lg shadow-lg w-[860px] text-left">
+        <div className="bg-white pt-8 pr-8 pb-8 pl-8 rounded-lg shadow-lg w-[1200px] text-left">
 
             {/* Header Section */}
             <div className="flex items-center justify-between mb-6">
@@ -22,17 +58,31 @@ const AllUsersTable = () => {
 
             {/* Table Headers */}
             <div className="flex text-sm font-semibold text-gray-400 border-b pb-3">
-                <div className="w-[14%] pl-4">User ID</div>
-                <div className="w-[20%]">User Type</div>
-                <div className="w-[26%]">Name</div>
-                <div className="w-[23.5%]">Email</div>
-                <div className="w-[0%]">Mobile</div>
+                <div className="w-[30%] pl-4">User ID</div>
+                <div className="w-[15%] pl-5">User Type</div>
+                <div className="w-[20%]">Name</div>
+                <div className="w-[20%]">Email</div>
+                <div className="w-[15%]">Mobile</div>
             </div>
 
-            {/* User Rows */}
-            <UserDetailsRow/>
-            <UserDetailsRow/>
-            <UserDetailsRow/>
+            {fetchError && (<p>{fetchError}</p>)}
+            {usersData && (
+                <div className="min-h-[430px] flex flex-col justify-between">
+                    <div>
+                        {currentUsers.map(userData => (
+                            <UserDetailsRow key={userData.id} userData={userData} />
+                        ))}
+                    </div>
+
+                    <UsersListPagination
+                        totalUsers={usersData.length} 
+                        UsersPerPage={UsersPerPage}
+                        setCurrentPage={setCurrentPage}
+                        currentPage={currentPage}
+                    />
+                </div>
+            )}   
+
         </div>
     );
 };
