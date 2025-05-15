@@ -1,23 +1,23 @@
 import React, { useState } from "react";
+import { supabase } from "../supabaseClient";
 
 const AddPatientForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    patient_name: "",
     age: "",
     gender: "",
-    roomNumber: "",
-    sleepDuration: "",
-    wakeUpTime: "",
-    personType: "",
-    diseaseType: "",
-    symptoms: "",
-    diseaseDescription: "",
+    room_number: "",
+    sleep_duration: "",
+    wake_time: "",
+    chronotype: "",
+    disease_type: "",
+    disease_description: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    const stringOnlyFields = ["name", "symptoms", "diseaseDescription"];
+    const stringOnlyFields = ["patient_name", "disease_description"];
     if (stringOnlyFields.includes(name)) {
       const lettersOnly = value.replace(/[^A-Za-z\s]/g, "");
       setFormData({ ...formData, [name]: lettersOnly });
@@ -26,40 +26,85 @@ const AddPatientForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const isEmpty = Object.values(formData).some((val) => val === "");
+
+    console.log("Form data before validation:", formData);
+
+    const isEmpty = Object.values(formData).some(
+      (val) => val === "" || val === null || val === undefined
+    );
     if (isEmpty) {
       alert("Please fill all fields!");
       return;
     }
-    alert("Patient added successfully!");
-    console.log("Submitted:", formData);
+
+    const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+    if (!timeRegex.test(formData.sleep_duration)) {
+      alert("Sleep Duration must be in hh:mm format.");
+      return;
+    }
+
+    if (!timeRegex.test(formData.wake_time)) {
+      alert("Wake-up Time must be in hh:mm format.");
+      return;
+    }
+
+    const { data, error } = await supabase.from("patients").insert([{
+      patient_name: formData.patient_name,
+      age: parseInt(formData.age),
+      gender: formData.gender,
+      room_no: formData.room_number,
+      sleep_duration: formData.sleep_duration,
+      wake_time: formData.wake_time,
+      chronotype: formData.chronotype,
+      disease_type: formData.disease_type,
+      disease_description: formData.disease_description,
+      patient_status: "Admitted"
+    }]);
+
+    if (error) {
+      console.error("Error inserting data:", error.message);
+      alert(`Error adding patient: ${error.message}`);
+    } else {
+      alert("Patient added successfully!");
+      console.log("Inserted data:", data);
+      setFormData({
+        patient_name: "",
+        age: "",
+        gender: "",
+        room_number: "",
+        sleep_duration: "",
+        wake_time: "",
+        chronotype: "",
+        disease_type: "",
+        disease_description: "",
+        patient_status: "",
+      });
+    }
   };
 
   return (
     <div className="flex justify-center items-start py-8 px-4 min-h-[60vh]">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-4 rounded-md shadow-md w-full max-w-lg space-y-1.5 min-h-[100px]"
+        className="bg-white p-4 rounded-md shadow-md w-full max-w-lg space-y-1.5"
       >
-        {/* Top Title */}
-        <div>
-          <h2 className="text-left text-2xl font-bold">Patient’s Information</h2>
-          <p className="text-sm text-gray-500 text-left mt-1">
-            Provide the necessary person’s information, disease details, and sleep information.
-          </p>
-        </div>
+        <h2 className="text-left text-2xl font-bold">Patient’s Information</h2>
+        <p className="text-sm text-gray-500 text-left mt-1">
+          Provide the necessary patient details, disease info, and sleep data.
+        </p>
 
-        {/* Patient Information */}
+        {/* Patient Info */}
         <div className="space-y-1.5">
           <h3 className="font-medium mt-4 text-sm text-black">Patient Information</h3>
           <div className="grid grid-cols-2 gap-3">
             <input
               type="text"
-              name="name"
+              name="patient_name"
               placeholder="Name"
-              value={formData.name}
+              value={formData.patient_name}
               onChange={handleChange}
               className="p-1.5 text-sm border rounded-md border-gray-300"
             />
@@ -78,70 +123,53 @@ const AddPatientForm = () => {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="p-1.5 rounded-md text-sm border border-gray-300 text-gray-500"
+              className={`p-1.5 rounded-md text-sm border border-gray-300 ${formData.gender ? 'text-black' : 'text-gray-500'}`}
             >
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
+
             <input
               type="text"
-              name="roomNumber"
+              name="room_number"
               placeholder="Room Number"
-              value={formData.roomNumber}
+              value={formData.room_number}
               onChange={handleChange}
               className="p-1.5 text-sm border rounded-md border-gray-300"
             />
           </div>
         </div>
 
-        {/* Sleep Information */}
+        {/* Sleep Info */}
         <div className="space-y-1.5">
           <h3 className="font-medium mt-6 text-sm text-black">Sleep Information</h3>
           <div className="grid grid-cols-3 gap-3">
-            <select
-              name="sleepDuration"
-              value={formData.sleepDuration}
+            <input
+              type="text"
+              name="sleep_duration"
+              placeholder="Sleep Duration hh:mm"
+              value={formData.sleep_duration}
               onChange={handleChange}
-              className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
-            >
-              <option value="">Sleep Duration</option>
-              {Array.from({ length: 144 }, (_, i) => {
-                const hours = String(Math.floor(i / 6)).padStart(2, '0');
-                const minutes = String((i % 6) * 10).padStart(2, '0');
-                return (
-                  <option key={`duration-${i}`} value={`${hours}:${minutes}`}>
-                    {hours}:{minutes}
-                  </option>
-                );
-              })}
-            </select>
+              className="p-1.5 text-sm border rounded-md border-gray-300"
+            />
+
+            <input
+              type="text"
+              name="wake_time"
+              placeholder="Wake-up Time hh:mm"
+              value={formData.wake_time}
+              onChange={handleChange}
+              className="p-1.5 text-sm border rounded-md border-gray-300"
+            />
 
             <select
-              name="wakeUpTime"
-              value={formData.wakeUpTime}
+              name="chronotype"
+              value={formData.chronotype}
               onChange={handleChange}
-              className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
+              className={`p-1.5 text-sm border rounded-md border-gray-300 ${formData.chronotype ? 'text-black' : 'text-gray-500'}`}
             >
-              <option value="">Wake Up Time</option>
-              {Array.from({ length: 144 }, (_, i) => {
-                const hours = String(Math.floor(i / 6)).padStart(2, '0');
-                const minutes = String((i % 6) * 10).padStart(2, '0');
-                return (
-                  <option key={`wake-${i}`} value={`${hours}:${minutes}`}>
-                    {hours}:{minutes}
-                  </option>
-                );
-              })}
-            </select>
-
-            <select
-              name="personType"
-              value={formData.personType}
-              onChange={handleChange}
-              className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
-            >
-              <option value="">Person Type</option>
+              <option value="">Chronotype</option>
               <option value="Definitely a morning type">Definitely a morning type</option>
               <option value="Rather more a morning type than an evening type">
                 Rather more a morning type than an evening type
@@ -154,15 +182,15 @@ const AddPatientForm = () => {
           </div>
         </div>
 
-        {/* Disease Information */}
+        {/* Disease Info */}
         <div className="space-y-1.5">
           <h3 className="font-medium mt-6 text-sm text-black">Disease Information</h3>
           <div className="grid grid-cols-2 gap-3">
             <select
-              name="diseaseType"
-              value={formData.diseaseType}
+              name="disease_type"
+              value={formData.disease_type}
               onChange={handleChange}
-              className="p-1.5 text-sm border rounded-md border-gray-300 text-gray-500"
+              className={`p-1.5 text-sm border rounded-md border-gray-300 ${formData.disease_type ? 'text-black' : 'text-gray-500'}`}
             >
               <option value="">Select Disease Type</option>
               <option value="Diabetes">Diabetes</option>
@@ -171,21 +199,13 @@ const AddPatientForm = () => {
               <option value="Flu">Flu</option>
               <option value="Other">Other</option>
             </select>
-            <input
-              type="text"
-              name="symptoms"
-              placeholder="Symptoms"
-              value={formData.symptoms}
-              onChange={handleChange}
-              className="p-1.5 text-sm border rounded-md border-gray-300"
-            />
           </div>
           <textarea
-            name="diseaseDescription"
+            name="disease_description"
             placeholder="Disease Description"
-            value={formData.diseaseDescription}
+            value={formData.disease_description}
             onChange={handleChange}
-            className="w-full p-2 text-sm border rounded-md border-gray-300 rounded resize-none"
+            className="w-full p-2 text-sm border rounded-md border-gray-300 resize-none"
             rows={2}
           ></textarea>
         </div>
