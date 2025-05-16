@@ -57,15 +57,14 @@ const AddDeviceForm = () => {
   }
 
   // Proceed to insert
-  const { error } = await supabase.from("devices").insert([
-    {
-      device_id: device_id.trim(),
-      building_no: building_no.trim(),
-      floor_no: floor_no.trim(),
-      room_no: room_no.trim(),
-      active_status: "Online",
-    },
-  ]);
+const { error } = await supabase.from("devices").insert([
+  {
+    device_id: device_id.trim(),
+    building_no: building_no.trim(),
+    floor_no: floor_no.trim(),
+    room_no: room_no.trim(),
+  },
+]);
 
   if (error) {
     alert("Error: " + error.message);
