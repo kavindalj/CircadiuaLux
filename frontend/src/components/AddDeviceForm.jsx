@@ -68,7 +68,7 @@ const AddDeviceForm = () => {
   ]);
 
   if (error) {
-    alert("Error adding device: " + error.message);
+    alert("Error: " + error.message);
   } else {
     alert("Device added successfully!");
     setFormData({
