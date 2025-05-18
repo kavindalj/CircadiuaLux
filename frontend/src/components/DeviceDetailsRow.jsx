@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const DeviceDetailsRow = ({deviceData}) => {
@@ -18,9 +18,11 @@ const DeviceDetailsRow = ({deviceData}) => {
                     {deviceData.active_status}
                 </span>
             </div>
-            <div className="w-[19%] pt-0 pr-2 pb-0 pl-10">{deviceData.CCT_estimated || '-'}</div>
+            <div className="w-[19%] pt-0 pr-2 pb-0 pl-10">
+                {deviceData.CCT_estimated}
+                </div>
             <div className="w-1/2 pt-0 pr-2 pb-0 pl-16 flex justify-between items-center text-right">
-                {deviceData.PhotopicLux || '-'}
+                {deviceData.PhotopicLux}
                 <span
                     className="text-sky-500 cursor-pointer hover:underline ml-2"
                     onClick={() => navigate('/dashboardAdmin/seeMoreDevice', { state: { defaultForm: 'lighting' }})
