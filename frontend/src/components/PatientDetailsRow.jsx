@@ -33,7 +33,7 @@ const PatientDetailsRow = ({patientData}) => {
                 </div>
                 <div
                     className="w-1/5 text-sky-500 cursor-pointer hover:underline text-right"
-                    onClick={() => navigate('/dashboard/seeMorePatient')}
+                    onClick={() => navigate('/dashboard/seeMorePatient', { state: { patientId: patientData.id , patientStatus: patientData.patient_status} })}
                 >
                     See more &gt;&gt;
                 </div>

@@ -59,7 +59,8 @@ const AllDevicesTable = () => {
                             room_no: device.room_no,
                             active_status: admittedPatient ? 'Online' : 'Offline',
                             CCT_estimated: prediction?.CCT_estimated || '-',
-                            PhotopicLux: prediction?.PhotopicLux || '-'
+                            PhotopicLux: prediction?.PhotopicLux || '-',
+                            patient_id: admittedPatient?.id || null
                         };
                     });
 

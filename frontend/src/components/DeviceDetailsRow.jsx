@@ -23,13 +23,21 @@ const DeviceDetailsRow = ({deviceData}) => {
                 </div>
             <div className="w-1/2 pt-0 pr-2 pb-0 pl-16 flex justify-between items-center text-right">
                 {deviceData.PhotopicLux}
-                <span
-                    className="text-sky-500 cursor-pointer hover:underline ml-2"
-                    onClick={() => navigate('/dashboardAdmin/seeMoreDevice', { state: { defaultForm: 'lighting' }})
-                    }
-                >
-                    See More &gt;&gt;
-                </span>
+
+                {deviceData.active_status === 'Online' ? (
+                    <span
+                        className="text-sky-500 cursor-pointer hover:underline ml-2"
+                        onClick={() =>
+                        navigate('/dashboardAdmin/seeMoreDevice', {
+                            state: { patientId: deviceData.patient_id, defaultForm: 'lighting' },
+                        })
+                        }
+                    >
+                        See More &gt;&gt;
+                    </span>
+                    ) : (
+                    <span className="text-gray-400 ml-2 cursor-not-allowed">See More &gt;&gt;</span>
+                    )}
             </div>
         </div>
     );
