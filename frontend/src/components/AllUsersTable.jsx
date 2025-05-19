@@ -15,6 +15,12 @@ const AllUsersTable = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [UsersPerPage] = useState(7)
 
+    //To format the show_id as USRXXXX
+    const formatUserId = (id) => {
+        if (!id && id !== 0) return '';
+        return `USR${String(id).padStart(3, '0')}`;
+    };
+
     //Fetch users details
     useEffect(() => {
         const fetchUsersData = async () => {
@@ -58,8 +64,8 @@ const AllUsersTable = () => {
 
             {/* Table Headers */}
             <div className="flex text-sm font-semibold text-gray-400 border-b pb-3">
-                <div className="w-[10%] pl-4">User ID</div>
-                <div className="w-[20%] pl-5">User Type</div>
+                <div className="w-[12%] pl-4">User ID</div>
+                <div className="w-[18%] pl-5">User Type</div>
                 <div className="w-[25%]">Name</div>
                 <div className="w-[25%]">Email</div>
                 <div className="w-[20%]">Mobile</div>
@@ -70,7 +76,7 @@ const AllUsersTable = () => {
                 <div className="min-h-[430px] flex flex-col justify-between">
                     <div>
                         {currentUsers.map(userData => (
-                            <UserDetailsRow key={userData.show_id} userData={userData} />
+                            <UserDetailsRow key={userData.show_id} userData={{...userData, show_id: formatUserId(userData.show_id)}} />
                         ))}
                     </div>
 

@@ -4,8 +4,8 @@ const UserDetailsRow = ({ userData }) => {
           
     return (
         <div className="flex items-center border-b py-3 px-4 hover:bg-gray-50 transition duration-150">
-            <div className="w-[10%] ">{userData.show_id}</div> {/* User ID */}
-            <div className="w-[20%] flex justify-start text-center ">
+            <div className="w-[12%] ">{userData.show_id}</div> {/* User ID */}
+            <div className="w-[18%] flex justify-start text-center ">
                 <span
                     className={`text-sm px-3 py-1 rounded border text-center w-[100px]  ${
                         userData.role?.toLowerCase() === 'caretaker'
