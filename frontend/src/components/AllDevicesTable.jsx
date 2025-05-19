@@ -18,10 +18,31 @@ const AllDevicesTable = () => {
     //Fetch patent details
     useEffect(() => {
         const fetchdevicesData = async () => {
+
+            //To get the current colombo time 
+            const timeZone = import.meta.env.VITE_TIMEZONE;
+            const time = new Date().toLocaleString("en-US", { timeZone });
+            const current = new Date(time);
+            const hours = current.getHours().toString().padStart(2, '0');
+            const minutes = current.getMinutes() < 30 ? '00' : '30';
+            const blockTime = `${hours}:${minutes}`;
+
             const { data,error } = await supabase
-                .from("device_summary")
-                .select("device_id, room_no, active_status, PhotopicLux, CCT_estimated")
-                .order("device_id", { ascending: true });
+                .from("devices")
+                .select(`
+                    device_id,
+                    room_no,
+                    patients (
+                        id,
+                        patient_status,
+                        lighting_predictions (
+                            time,
+                            PhotopicLux,
+                            CCT_estimated
+                        )
+                    )
+                `)
+                .order('device_id', { ascending: true });
     
                 if(error){
                     setFetchError("Could not fetch patient data");
@@ -29,8 +50,20 @@ const AllDevicesTable = () => {
                     console.log("Error fetching: " , error);
                 }
                 if (data) {
-                    console.log("Fetched devices:", data);
-                    setdevicesData (data);
+                    const formatted = data.map(device => {
+                        const admittedPatient = device.patients?.find(p => p.patient_status === 'Admitted');
+                        const prediction = admittedPatient?.lighting_predictions?.find(lp => lp.time === blockTime);
+
+                        return {
+                            device_id: device.device_id,
+                            room_no: device.room_no,
+                            active_status: admittedPatient ? 'Online' : 'Offline',
+                            CCT_estimated: prediction?.CCT_estimated || '-',
+                            PhotopicLux: prediction?.PhotopicLux || '-'
+                        };
+                    });
+
+                    setdevicesData(formatted);
                     setFetchError(null);
                 }
         }
@@ -38,9 +71,9 @@ const AllDevicesTable = () => {
     }, [])
 
     //Pagination part
-    const lastdeviceIndex = currentPage * devicesPerPage
-    const firstdeviceIndex = lastdeviceIndex - devicesPerPage
-    const currentdevices = devicesData.slice(firstdeviceIndex, lastdeviceIndex)
+    const lastDeviceIndex = currentPage * devicesPerPage
+    const firstDeviceIndex = lastDeviceIndex - devicesPerPage
+    const currentDevices = devicesData.slice(firstDeviceIndex, lastDeviceIndex)
 
     return (
         <div className="bg-white pt-8 pr-8 pb-8 pl-8 rounded-lg shadow-lg w-[950px] text-left">
@@ -58,7 +91,7 @@ const AllDevicesTable = () => {
 
             {/* Table Headers */}
             <div className="flex text-sm font-semibold text-gray-400 border-b pb-3 ">
-                <div className="w-[12%]pt-0 pr-10 pb-0 pl-2">DeviceID</div>
+                <div className="w-[12%] pt-0 pr-10 pb-0 pl-2">DeviceID</div>
                 <div className="w-[16.5%]">Room Number</div>
                 <div className="w-[15%]">Active Status</div>
                 <div className="w-[18%]">Color Temperature</div>
@@ -72,14 +105,14 @@ const AllDevicesTable = () => {
             <DeviceDetailsRow />
             <DeviceDetailsRow /> */}
 
-            {fetchError && (<p>{fetchError}</p>)}
+            {fetchError && <p>{fetchError}</p>}
             {devicesData && (
                 <div className="min-h-[430px] flex flex-col justify-between">
-                    <div>
-                        {currentdevices.map(deviceData => (
-                            <DeviceDetailsRow key={deviceData.id} deviceData={deviceData} />
-                        ))}
-                    </div>
+                <div>
+                    {currentDevices.map(device => (
+                    <DeviceDetailsRow key={device.device_id} deviceData={device} />
+                    ))}
+                </div>
 
                     <DevicesListPagination
                         totalDevices={devicesData.length} 

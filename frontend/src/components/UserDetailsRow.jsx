@@ -4,8 +4,8 @@ const UserDetailsRow = ({ userData }) => {
           
     return (
         <div className="flex items-center border-b py-3 px-4 hover:bg-gray-50 transition duration-150">
-            <div className="w-[30%] ">{userData.id}</div> {/* User ID */}
-            <div className="w-[15%] flex justify-start text-center ">
+            <div className="w-[12%] ">{userData.show_id}</div> {/* User ID */}
+            <div className="w-[18%] flex justify-start text-center ">
                 <span
                     className={`text-sm px-3 py-1 rounded border text-center w-[100px]  ${
                         userData.role?.toLowerCase() === 'caretaker'
@@ -15,9 +15,9 @@ const UserDetailsRow = ({ userData }) => {
                     {userData.role}
                 </span>
             </div>
-            <div className="w-[20%] ">{userData.full_name}</div> {/* Name */}
-            <div className="w-[20%] ">{userData.email}</div> {/* Email */}
-            <div className="w-[15%]  ">{userData.phone}</div> {/* Mobile */}
+            <div className="w-[25%] ">{userData.full_name}</div> {/* Name */}
+            <div className="w-[25%] ">{userData.email}</div> {/* Email */}
+            <div className="w-[20%]  ">{userData.phone}</div> {/* Mobile */}
         </div>
     );
 };
