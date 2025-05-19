@@ -20,8 +20,9 @@ const AllDevicesTable = () => {
         const fetchdevicesData = async () => {
 
             //To get the current colombo time 
-            const colomboTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Colombo" });
-            const current = new Date(colomboTime);
+            const timeZone = import.meta.env.VITE_TIMEZONE;
+            const time = new Date().toLocaleString("en-US", { timeZone });
+            const current = new Date(time);
             const hours = current.getHours().toString().padStart(2, '0');
             const minutes = current.getMinutes() < 30 ? '00' : '30';
             const blockTime = `${hours}:${minutes}`;
