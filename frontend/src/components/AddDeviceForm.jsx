@@ -17,67 +17,82 @@ const AddDeviceForm = () => {
     }));
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const { device_id, building_no, floor_no, room_no } = formData;
+    const { device_id, building_no, floor_no, room_no } = formData;
 
-  if (!device_id.trim() || !building_no.trim() || !floor_no.trim() || !room_no.trim()) {
-    alert("Please fill all fields!");
-    return;
-  }
+    if (!device_id.trim() || !building_no.trim() || !floor_no.trim() || !room_no.trim()) {
+      alert("Please fill all fields!");
+      return;
+    }
 
-  // Allow 1 or 2 digit numbers for building_no and floor_no
-  const isOneOrTwoDigitNumber = (value) => /^\d{1,2}$/.test(value);
+    const isOneOrTwoDigitNumber = (value) => /^\d{1,2}$/.test(value);
 
-  if (!isOneOrTwoDigitNumber(building_no)) {
-    alert("Add a valid building number");
-    return;
-  }
+    if (!isOneOrTwoDigitNumber(building_no)) {
+      alert("Add a valid building number");
+      return;
+    }
 
-  if (!isOneOrTwoDigitNumber(floor_no)) {
-    alert("Add a valid floor number");
-    return;
-  }
+    if (!isOneOrTwoDigitNumber(floor_no)) {
+      alert("Add a valid floor number");
+      return;
+    }
 
-  // Check for duplicate room number
-  const { data: existingRoom, error: fetchError } = await supabase
-    .from("devices")
-    .select("room_no")
-    .eq("room_no", room_no.trim());
+    // Check for duplicate room_no
+    const { data: existingRoom, error: roomError } = await supabase
+      .from("devices")
+      .select("room_no")
+      .eq("room_no", room_no.trim());
 
-  if (fetchError) {
-    alert("Error checking existing room: " + fetchError.message);
-    return;
-  }
+    if (roomError) {
+      alert("Error checking existing room: " + roomError.message);
+      return;
+    }
 
-  if (existingRoom.length > 0) {
-    alert("Room number already exists. Please use a different room number.");
-    return;
-  }
+    if (existingRoom.length > 0) {
+      alert("Room number already exists. Please use a different room number.");
+      return;
+    }
 
-  // Proceed to insert
-const { error } = await supabase.from("devices").insert([
-  {
-    device_id: device_id.trim(),
-    building_no: building_no.trim(),
-    floor_no: floor_no.trim(),
-    room_no: room_no.trim(),
-  },
-]);
+    // Check for duplicate device_id
+    const { data: existingDevice, error: deviceError } = await supabase
+      .from("devices")
+      .select("device_id")
+      .eq("device_id", device_id.trim());
 
-  if (error) {
-    alert("Error: " + error.message);
-  } else {
-    alert("Device added successfully!");
-    setFormData({
-      device_id: "",
-      building_no: "",
-      floor_no: "",
-      room_no: "",
-    });
-  }
-};
+    if (deviceError) {
+      alert("Error checking existing device: " + deviceError.message);
+      return;
+    }
+
+    if (existingDevice.length > 0) {
+      alert("Device ID already exists. Please use a different device ID.");
+      return;
+    }
+
+    // Proceed to insert
+    const { error } = await supabase.from("devices").insert([
+      {
+        device_id: device_id.trim(),
+        building_no: building_no.trim(),
+        floor_no: floor_no.trim(),
+        room_no: room_no.trim(),
+      },
+    ]);
+
+    if (error) {
+      alert("Error: " + error.message);
+    } else {
+      alert("Device added successfully!");
+      setFormData({
+        device_id: "",
+        building_no: "",
+        floor_no: "",
+        room_no: "",
+      });
+    }
+  };
 
   return (
     <div className="flex justify-center items-start py-8 px-4 min-h-[60vh]">

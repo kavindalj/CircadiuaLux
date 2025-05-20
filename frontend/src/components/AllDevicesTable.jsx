@@ -83,7 +83,7 @@ const AllDevicesTable = () => {
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-left text-xl font-bold mb-1">All Devices</h2>
                 <button 
-                    className="bg-sky-500 text-white font-bold px-10 py-1.5 rounded hover:bg-sky-600 transition"
+                    className="cursor-pointer bg-sky-500 text-white font-bold px-10 py-1.5 rounded hover:bg-sky-600 transition"
                     onClick={() => navigate('/dashboardAdmin/addDevice')}
                 >
                     Add Device
