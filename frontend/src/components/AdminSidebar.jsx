@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdDashboard, MdPeople, MdDevices, MdSettings, MdLogout } from 'react-icons/md';
-import {Link} from 'react-router';
+import { Link, useLocation } from 'react-router-dom'; 
 
 const AdminSidebar = () => {
-    const [activeItem, setActiveItem] = useState('Dashboard');
+    const [activeItem, setActiveItem] = useState('');
+
+    const location = useLocation();
+
+    useEffect(() => {
+        const currentPath = location.pathname;
+
+        const matchedItem = navItems.find(item => item.link === currentPath);
+        if (matchedItem) {
+            setActiveItem(matchedItem.label);
+        }
+    }, [location.pathname]); 
 
     const navItems = [
         { label: 'Dashboard', icon: MdDashboard, link: '/dashboardAdmin' },
@@ -12,10 +23,6 @@ const AdminSidebar = () => {
         { label: 'Settings', icon: MdSettings, link: '/dashboardAdmin/settings' },
     ];
 
-    const handleNavClick = (label) => {
-        setActiveItem(label);
-    };
-
     return (
         <div className="w-[240px] h-[92vh] bg-gray-00 shadow-md border-r shadow-[#34A8DD] flex flex-col justify-between items-center py-5">
             <ul className="w-full mt-8 list-none">
@@ -23,9 +30,9 @@ const AdminSidebar = () => {
                     <li key={label} className="w-full flex justify-center">
                         <Link
                             to={link}
-                            onClick={() => handleNavClick(label)}
-                            className={`flex items-center font-bold text-sm no-underline gap-2 px-10 py-2 w-full justify-start transition-colors duration-200 ${activeItem === label ? 'text-[#34A8DD]' : 'text-gray-500 hover:text-gray-700'
-                                }`}
+                            className={`flex items-center font-bold text-sm no-underline gap-2 px-10 py-2 w-full justify-start transition-colors duration-200 ${
+                                activeItem === label ? 'text-[#34A8DD]' : 'text-gray-500 hover:text-gray-700'
+                            }`}
                         >
                             <Icon className="text-lg" />
                             <span>{label}</span>
