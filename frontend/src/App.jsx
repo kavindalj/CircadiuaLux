@@ -16,6 +16,7 @@ import AllPatientsTable from "./components/AllPatientsTable";
 import CaretakerCards from "./components/CaretakerCards";
 import AddPatientForm from "./components/AddPatientForm";
 import Modal from "./components/Modal";
+import ActivePatientsTable from "./components/ActivePatientsTable";
 
 const router = createBrowserRouter([
     {
@@ -29,6 +30,14 @@ const router = createBrowserRouter([
         {
           index: true,
           element: <CaretakerCards />,
+        },
+        {
+          path: "activePatients",
+          element: <ActivePatientsTable />,
+        },
+        {
+          path: "connectedDevices",
+          element: <AllDevicesTable />,
         },
         {
           path: "patientDetails",
