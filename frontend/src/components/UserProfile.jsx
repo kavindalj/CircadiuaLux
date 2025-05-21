@@ -62,7 +62,7 @@ const UserProfile = () => {
 
           {/* Right side: button aligned to right column */}
           <div className="flex justify-end">
-            <button className="mr-[37px] bg-[#34A8DD] text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]">
+            <button className="mt-[27px] mr-[37px] bg-[#34A8DD] text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]">
               Edit Profile Picture
             </button>
           </div>
@@ -78,7 +78,7 @@ const UserProfile = () => {
               </label>
               <input
                 placeholder={profile?.full_name}
-                className="w-full max-w-[300px] p-2 bg-gray-100 rounded outline-none"
+                className="w-full max-w-[300px] h-[36px] bg-gray-100 rounded outline-none pl-1"
                 readOnly
               />
             </div>
@@ -88,7 +88,7 @@ const UserProfile = () => {
               </label>
               <input
                 placeholder={profile?.gender}
-                className="w-full max-w-[300px] p-2 bg-gray-100 rounded outline-none"
+                className="w-full max-w-[300px] h-[36px] bg-gray-100 rounded outline-none pl-1"
                 readOnly
               />
             </div>
@@ -98,7 +98,7 @@ const UserProfile = () => {
               </label>
               <input
                 placeholder={profile?.email}
-                className="w-full max-w-[300px] p-2 bg-gray-100 rounded outline-none"
+                className="w-full max-w-[300px] h-[36px] bg-gray-100 rounded outline-none pl-1"
                 readOnly
               />
             </div>
@@ -112,7 +112,7 @@ const UserProfile = () => {
               </label>
               <input
                 placeholder = {formatUserId(profile?.show_id)}
-                className="w-full max-w-[300px] p-2 bg-gray-100 rounded outline-none"
+                className="w-full max-w-[300px] h-[36px] bg-gray-100 rounded outline-none pl-1"
                 readOnly
               />
             </div>
@@ -122,7 +122,7 @@ const UserProfile = () => {
               </label>
               <input
                 placeholder={profile?.phone}
-                className="w-full max-w-[300px] p-2 bg-gray-100 rounded outline-none"
+                className="w-full max-w-[300px] h-[36px] bg-gray-100 rounded outline-none pl-1"
                 readOnly
               />
             </div>
@@ -132,7 +132,7 @@ const UserProfile = () => {
               </label>
               <input
                 placeholder={profile?.nic}
-                className="w-full max-w-[300px] p-2 bg-gray-100 rounded outline-none"
+                className="w-full max-w-[300px] h-[36px] bg-gray-100 rounded outline-none pl-1"
                 readOnly
               />
             </div>
