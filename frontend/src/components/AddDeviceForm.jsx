@@ -142,7 +142,7 @@ const AddDeviceForm = () => {
         </div>
 
         <div>
-          <label className="block mb-1 font-semibold text-sm">Room Number</label>
+          <label className="block mb-1 font-semibold text-sm">Room ID</label>
           <input
             type="text"
             name="room_no"
