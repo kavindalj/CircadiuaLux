@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient'; // Adjust if needed
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient"; // Adjust if needed
 
 export default function useFetchProfile() {
   const [profile, setProfile] = useState(null);
@@ -8,22 +8,25 @@ export default function useFetchProfile() {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
 
       if (userError || !user) {
-        console.error('User not authenticated:', userError);
-        navigate('/login');
+        console.error("User not authenticated:", userError);
+        navigate("/login");
         return;
       }
 
       const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
+        .from("user_profiles")
+        .select("*")
+        .eq("id", user.id)
         .single();
 
       if (error) {
-        console.error('Error fetching profile:', error.message);
+        console.error("Error fetching profile:", error.message);
       } else {
         setProfile(data);
       }
