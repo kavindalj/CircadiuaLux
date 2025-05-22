@@ -5,7 +5,7 @@ import DeviceDetailsRow from './DeviceDetailsRow';
 import { supabase } from "../supabaseClient";
 import DevicesListPagination from './DevicesListPagination';
 
-const AllDevicesTable = () => {
+const AllDevicesTable = ({ filterByStatus = null }) => {
 
     const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ const AllDevicesTable = () => {
     
                 if(error){
                     setFetchError("Could not fetch patient data");
-                    setdevicesData(null);
+                    setdevicesData([]);
                     console.log("Error fetching: " , error);
                 }
                 if (data) {
@@ -63,13 +63,18 @@ const AllDevicesTable = () => {
                             patient_id: admittedPatient?.id || null
                         };
                     });
+			
+		    const filtered = filterByStatus
+          		? formatted.filter((device) => device.active_status.toLowerCase() === filterByStatus.toLowerCase())
+          		: formatted;
+
 
                     setdevicesData(formatted);
                     setFetchError(null);
                 }
         }
         fetchdevicesData();
-    }, [])
+    }, [filterByStatus])
 
     //Pagination part
     const lastDeviceIndex = currentPage * devicesPerPage
