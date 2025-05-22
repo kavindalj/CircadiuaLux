@@ -1,5 +1,8 @@
 #pragma once
 
+//Device ID
+extern String device_id;
+
 // Sensor LED
 extern const int SENSOR_LED_PIN;
 
@@ -14,3 +17,8 @@ extern String anon_key;
 // WiFi
 extern const char *ssid;
 extern const char *psswd;
+
+// NTP server settings
+extern const char* ntpServer;
+extern const long gmtOffset_sec;
+extern const int daylightOffset_sec;
