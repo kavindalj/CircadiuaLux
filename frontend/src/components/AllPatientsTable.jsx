@@ -20,7 +20,7 @@ const AllPatientsTable = () => {
         const fetchPatientsData = async () => {
             const { data,error } = await supabase
                 .from("patients")
-                .select("id,patient_name, room_no, gender, patient_status")
+                .select("id,patient_name, room_no, gender, patient_status, wake_time, sleep_duration ")
                 .order("patient_name", { ascending: true });
 
                 if(error){
@@ -43,7 +43,7 @@ const AllPatientsTable = () => {
     const currentPatients = patientsData.slice(firstPatientIndex, lastPatientIndex)
 
     return (
-        <div className="bg-white p-8 rounded-lg shadow-lg w-[1000px] text-center">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-[1200px] text-center">
             {/* Header Section */}
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-left text-xl font-bold mb-1">Patient Details</h2>
@@ -56,11 +56,14 @@ const AllPatientsTable = () => {
             </div>
 
             {/* Table Headers */}
-            <div className="flex text-sm font-semibold text-gray-400 border-b pb-2">
-                <div className="w-1/5">Name</div>
-                <div className="w-1/5">Room</div>
-                <div className="w-1/5">Gender</div>
-                <div className="w-1/5">Status</div>
+            <div className="flex text-sm font-semibold text-gray-400 border-b pb-2 text-left">
+                <div className="w-[12%]">Name</div>
+                <div className="w-[12%]">Room</div>
+                <div className="w-[12%]">Gender</div>
+                <div className="w-[16%]">Status</div>
+                <div className="w-[16%]">Wakeup time</div>
+                <div className="w-[16%]">Sleep duration</div>
+                
             </div>
 
             {fetchError && (<p>{fetchError}</p>)}
