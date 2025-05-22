@@ -27,7 +27,7 @@ const UserProfile = () => {
   return (
     <div className="w-full px-10 py-4">
       {/* Greeting & Time */}
-      <div className="max-w-2xl mx-auto mb-6 text-left">
+      <div className="max-w-2xl mx-auto mt-6 mb-6 text-left">
         <h1 className="text-4xl font-semibold text-gray-700">
           Welcome, {profile?.first_name}!
         </h1>
@@ -62,7 +62,7 @@ const UserProfile = () => {
 
           {/* Right side: button aligned to right column */}
           <div className="flex justify-end">
-            <button className="mt-[27px] mr-[37px] bg-[#34A8DD] text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]">
+            <button className="mt-[27px] mr-[37px] bg-[#34A8DD] font-bold text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]">
               Edit Profile Picture
             </button>
           </div>
@@ -143,7 +143,7 @@ const UserProfile = () => {
       {/* Change Password */}
       <div className="max-w-2xl mx-auto text-left mt-6">
         <button
-          className="bg-[#34A8DD] text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]"
+          className="bg-[#34A8DD] font-bold text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]"
           onClick={() => {
             if (profile?.role === "admin") {
               window.location.href = "/dashboardAdmin/change-password";
