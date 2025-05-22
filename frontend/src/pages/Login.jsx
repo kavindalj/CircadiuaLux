@@ -3,6 +3,8 @@ import { RiUserLine, RiAdminLine } from "react-icons/ri";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router";
+import Cookies from "js-cookie";
+
 
 const Login = () => {
   const [role, setRole] = useState("caretaker");
@@ -41,8 +43,11 @@ const Login = () => {
       return;
     }
 
-    // alert(`Logged in as ${role}`);
-    // console.log("User:", data.user);
+    // Store email and role in cookies
+Cookies.set("userEmail", form.email, { expires: 7 }); // 7 days expiry
+Cookies.set("userRole", profile?.role, { expires: 7 });
+
+
 
     if (profile?.role === "admin") {
       navigate("/dashboardAdmin");
