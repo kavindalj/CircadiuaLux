@@ -28,7 +28,7 @@ SupabaseData getDataFromSupabase(String device_id, String time)
   // Serial.println(room_no);
 
   // Get patient id, status, disease
-  read = db.from("patients").select("id,patient_status,disease").eq("room_no", room_no).doSelect();
+  read = db.from("patients").select("id,patient_status,disease").eq("room_no", room_no).eq("patient_status","Admitted").doSelect();
   db.urlQuery_reset();
   Serial.println(read);
 
