@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdDashboard, MdPeople, MdSettings, MdLogout } from 'react-icons/md';
-import {Link} from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const CaretakerSidebar = () => {
-  const [activeItem, setActiveItem] = useState('Dashboard');
+  const [activeItem, setActiveItem] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const navItems = [
     { label: 'Dashboard', icon: MdDashboard, link: '/dashboard' },
@@ -11,8 +14,20 @@ const CaretakerSidebar = () => {
     { label: 'Settings', icon: MdSettings, link: '/dashboard/settings' },
   ];
 
-  const handleNavClick = (label) => {
-    setActiveItem(label);
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const matchedItem = navItems.find(item => item.link === currentPath);
+    if (matchedItem) {
+      setActiveItem(matchedItem.label);
+    }
+  }, [location.pathname]);
+
+  // Logout function clears cookies and redirects
+  const handleLogout = () => {
+    Cookies.remove("userEmail");
+    Cookies.remove("userRole");
+    Cookies.remove("userSession");
+    navigate("/"); // redirect to home or login page
   };
 
   return (
@@ -22,7 +37,6 @@ const CaretakerSidebar = () => {
           <li key={label} className="w-full flex justify-center">
             <Link
               to={link}
-              onClick={() => handleNavClick(label)}
               className={`flex items-center font-bold text-sm no-underline gap-2 px-10 py-2 w-full justify-start transition-colors duration-200 ${
                 activeItem === label ? 'text-[#34A8DD]' : 'text-gray-500 hover:text-gray-700'
               }`}
@@ -35,13 +49,13 @@ const CaretakerSidebar = () => {
       </ul>
 
       <div className="w-full px-5 mb-4 flex justify-center">
-        <Link
-          to="/"
-          className="flex items-center font-bold text-sm no-underline gap-2 text-[#dc3545] hover:text-[#c82333] transition-colors duration-200 px-6 py-5 w-full justify-start"
+        <button
+          onClick={handleLogout}
+          className="flex items-center font-bold text-sm gap-2 text-[#dc3545] hover:text-[#c82333] transition-colors duration-200 px-6 py-5 w-full justify-start cursor-pointer"
         >
-            <MdLogout className="text-lg" />
-            <span>Log Out</span>
-        </Link>
+          <MdLogout className="text-lg" />
+          <span>Log Out</span>
+        </button>
       </div>
     </div>
   );

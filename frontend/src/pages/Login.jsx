@@ -5,18 +5,14 @@ import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 
-
 const Login = () => {
   const [role, setRole] = useState("caretaker");
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
 
   const navigate = useNavigate();
-
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
-
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,7 +27,7 @@ const Login = () => {
       return;
     }
 
-    //fetch the user's role from a 'profiles'
+    // Fetch user role from profiles table
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")
@@ -43,12 +39,12 @@ const Login = () => {
       return;
     }
 
-    // Store email and role in cookies
-Cookies.set("userEmail", form.email, { expires: 7 }); // 7 days expiry
-Cookies.set("userRole", profile?.role, { expires: 7 });
+    // Store cookies
+    Cookies.set("userEmail", form.email, { expires: 7 }); // 7-day cookie
+    Cookies.set("userRole", profile?.role, { expires: 7 }); // 7-day cookie
+    Cookies.set("userSession", data.session?.access_token); // session cookie (no expiry)
 
-
-
+    // Redirect based on role
     if (profile?.role === "admin") {
       navigate("/dashboardAdmin");
     } else {
@@ -113,15 +109,13 @@ Cookies.set("userRole", profile?.role, { expires: 7 });
             </span>
           </div>
 
-          <div
-            className={"text-right text-xs cursor-pointer mb-3 text-[#34A8DD]"}
-          >
+          <div className="text-right text-xs cursor-pointer mb-3 text-[#34A8DD]">
             Forgot your password?
           </div>
 
           <button
             type="submit"
-            className={"w-full py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"}
+            className="w-full py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
           >
             {role === "admin" ? "Admin Login" : "Caretaker Login"}
           </button>
