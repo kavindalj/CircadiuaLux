@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaCheckCircle } from "react-icons/fa";
 import Modal from '../components/Modal';
-import { FaCheck } from "react-icons/fa";
 import { supabase } from "../supabaseClient";
 
 
@@ -14,41 +13,60 @@ const PatientDetailsRow = ({patientData}) => {
     const [currentStatus, setCurrentStatus] = useState(patientData.patient_status);
 
     const [wakeTime, setWakeTime] = useState(patientData.wake_time || '');
-    const [sleepDuration, setsleepDuration] = useState(patientData.sleep_duration || '');
+    const [sleepDuration, setSleepDuration] = useState(patientData.sleep_duration || '');
 
-    const handleSaveWakeTime = async () => {
+    const [isSaving, setIsSaving] = useState(false);
+
+    const handleSaveUpdatedTime = async () => {
+
+        const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+        if (!timeRegex.test(sleepDuration)) {
+            alert("Sleep Duration must be in hh:mm format.");
+            return;
+        }
+
+        if (!timeRegex.test(wakeTime)) {
+            alert("Wake-up Time must be in hh:mm format.");
+            return;
+        }
+
+        setIsSaving(true);
+        const updates = {};
+
+        if (wakeTime !== patientData.wake_time) {
+        updates.wake_time = wakeTime;
+        }
+        if (sleepDuration !== patientData.sleep_duration) {
+        updates.sleep_duration = sleepDuration;
+        }
+
+        if (Object.keys(updates).length === 0) {
+        setIsSaving(false);
+        return;
+        }
+
         const { error } = await supabase
         .from('patients')
-        .update({ wake_time: wakeTime })
+        .update(updates)
         .eq('id', patientData.id);
 
         if (error) {
-        console.error('Error updating wake time:', error.message);
+        console.error('Error updating patient data:', error.message);
         } else {
-        console.log('Wake time updated');
+        console.log('Patient data updated successfully');
         }
-    };
 
-    const handleSaveSleepDuration = async () => {
-        const { error } = await supabase
-        .from('patients')
-        .update({ sleep_duration: sleepDuration })
-        .eq('id', patientData.id);
-
-        if (error) {
-        console.error('Error updating sleep duration:', error.message);
-        } else {
-        console.log('Sleep duration updated');
-        }
+        setIsSaving(false);
     };
 
     return (
         <>
             <div className="flex items-center border-b py-3  hover:bg-gray-50 transition duration-150 text-left">
-                <div className="w-[12%]">{patientData.patient_name}</div>
-                <div className="w-[12%]">{patientData.room_no}</div>
-                <div className="w-[12%]">{patientData.gender}</div>
-                <div className="w-[16%] flex items-center gap-2">
+                <div className="w-[14%]">{patientData.patient_name}</div>
+                <div className="w-[14%]">{patientData.room_no}</div>
+                <div className="w-[13%]">{patientData.gender}</div>
+                <div className="w-[18%] flex items-center gap-2">
                     <span
                         className={`w-[100px] inline-block text-center 
                                 ${currentStatus?.toLowerCase() === "admitted"
@@ -64,37 +82,40 @@ const PatientDetailsRow = ({patientData}) => {
                         <FaEdit onClick={() => setShowModal(true)} className='cursor-pointer text-gray-500 hover:text-gray-700' />
                     </span>
                 </div>
-                <div className="w-[16%]">
-                    <div className='flex items-center gap-2 '>
-                        <input
-                        type='time'
-                        name='wakeTime'
-                        value={wakeTime}
+                <div className="w-[13%]">
+                    <input
+                        type="text"
+                        name="wakeTime"
+                        value={currentStatus?.toLowerCase() === "discharged" ? '' : wakeTime}
                         onChange={(e) => setWakeTime(e.target.value)}
-                        className=" border rounded border-[#34A8DD] text-sm px-3 py-1 "
-                        />
-                        <FaCheck
-                            onClick={handleSaveWakeTime}
-                            className='cursor-pointer text-gray-500 hover:text-gray-700 text-xs' />
-                    </div>
+                        disabled={currentStatus?.toLowerCase() === "discharged"}
+                        className="w-[100px] border rounded border-[#34A8DD] text-sm px-3 py-1"
+                        placeholder="Wake Time"
+                    />
                 </div>
-
-                <div className="w-[16%]">
-                    <div className='flex items-center gap-2'>
-                        <input
-                        type='time'
-                        name='sleep duration'
-                        value={sleepDuration}
-                        onChange={(e) => setsleepDuration(e.target.value)}
-                        className=" border border-[#34A8DD] rounded text-sm px-3 py-1"
-                        />
-                        <FaCheck 
-                            onClick={handleSaveSleepDuration}
-                            className='cursor-pointer text-gray-500 hover:text-gray-700 text-xs' />
-                    </div>
+                <div className="w-[18%] flex items-center gap-2">
+                    <input
+                        type="text"
+                        name="sleepDuration"
+                        value={currentStatus?.toLowerCase() === "discharged" ? '' : sleepDuration}
+                        onChange={(e) => setSleepDuration(e.target.value)}
+                        disabled={currentStatus?.toLowerCase() === "discharged"}
+                        className="w-[100px] border rounded border-[#34A8DD] text-sm px-3 py-1"
+                        placeholder="Sleep Duration"
+                    />
+                    {currentStatus?.toLowerCase() !== "discharged" && (
+                        isSaving ? (
+                            <div className="w-4 h-4 border-2 border-t-[#34A8DD] border-r-[#34A8DD] border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+                        ) : (
+                            <FaCheckCircle
+                            onClick={handleSaveUpdatedTime}
+                            className="cursor-pointer text-gray-500 hover:text-gray-700 text-s"
+                            />
+                        )
+                    )}
                 </div>
                 <div
-                    className="w-[16%] text-sky-500 cursor-pointer hover:underline text-right"
+                    className="w-[10%] text-sky-500 cursor-pointer hover:underline text-right"
                     onClick={() => navigate('/dashboard/seeMorePatient', { state: { patientId: patientData.id , patientStatus: patientData.patient_status} })}
                 >
                     See more &gt;&gt;

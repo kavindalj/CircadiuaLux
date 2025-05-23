@@ -43,7 +43,7 @@ const AllPatientsTable = () => {
     const currentPatients = patientsData.slice(firstPatientIndex, lastPatientIndex)
 
     return (
-        <div className="bg-white p-8 rounded-lg shadow-lg w-[1200px] text-center">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-[1000px] text-center">
             {/* Header Section */}
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-left text-xl font-bold mb-1">Patient Details</h2>
@@ -57,12 +57,12 @@ const AllPatientsTable = () => {
 
             {/* Table Headers */}
             <div className="flex text-sm font-semibold text-gray-400 border-b pb-2 text-left">
-                <div className="w-[12%]">Name</div>
-                <div className="w-[12%]">Room</div>
-                <div className="w-[12%]">Gender</div>
-                <div className="w-[16%]">Status</div>
-                <div className="w-[16%]">Wakeup time</div>
-                <div className="w-[16%]">Sleep duration</div>
+                <div className="w-[14%]">Name</div>
+                <div className="w-[14%]">Room</div>
+                <div className="w-[13%]">Gender</div>
+                <div className="w-[18%]">Status</div>
+                <div className="w-[13%]">Wakeup time</div>
+                <div className="w-[18%]">Sleep duration</div>
                 
             </div>
 
