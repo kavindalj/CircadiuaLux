@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaEdit, FaCheckCircle } from "react-icons/fa";
 import Modal from '../components/Modal';
 import { supabase } from "../supabaseClient";
+import { IoMdCheckboxOutline } from "react-icons/io";
 
 
 
@@ -107,7 +108,7 @@ const PatientDetailsRow = ({patientData}) => {
                         isSaving ? (
                             <div className="w-4 h-4 border-2 border-t-[#34A8DD] border-r-[#34A8DD] border-b-transparent border-l-transparent rounded-full animate-spin"></div>
                         ) : (
-                            <FaCheckCircle
+                            <IoMdCheckboxOutline 
                             onClick={handleSaveUpdatedTime}
                             className="cursor-pointer text-gray-500 hover:text-gray-700 text-s"
                             />
