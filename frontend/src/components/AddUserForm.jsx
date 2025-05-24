@@ -86,8 +86,12 @@ const AddUserForm = () => {
 
       if (profileError) {
         console.error("Profile Insert Error:", profileError.message);
-        alert("Failed to insert profile data: " + profileError.message);
-        return;
+        if (profileError.message.includes('foreign key constraint "profiles_id_fkey"')) {
+          alert("Failed to add user. This email is already registered.");
+        } else {
+          alert("Failed to add user: " + profileError.message);
+       }
+       return;
       }
 
       alert("User added successfully!");
