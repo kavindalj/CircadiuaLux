@@ -8,6 +8,7 @@ const AddUserForm = () => {
     role: "",
     nic: "",
     phone: "",
+    gender: "", // added gender to state
     email: "",
     password: "",
     confirmPassword: "",
@@ -16,36 +17,33 @@ const AddUserForm = () => {
   const [passwordMatch, setPasswordMatch] = useState(null);
 
   const handleChange = (e) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  // NIC: allow only max 12 characters
-  if (name === "nic" && value.length > 12) return;
+    if (name === "nic" && value.length > 12) return;
 
-  // Phone: allow only numbers and max 10 digits
-  if (name === "phone") {
-    const numericValue = value.replace(/\D/g, ""); // remove non-digits
-    if (numericValue.length > 10) return;
+    if (name === "phone") {
+      const numericValue = value.replace(/\D/g, "");
+      if (numericValue.length > 10) return;
+      setForm((prev) => ({
+        ...prev,
+        [name]: numericValue,
+      }));
+      return;
+    }
+
     setForm((prev) => ({
       ...prev,
-      [name]: numericValue,
+      [name]: value,
     }));
-    return;
-  }
 
-  setForm((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-
-  if (name === "password" || name === "confirmPassword") {
-    setPasswordMatch(
-      name === "confirmPassword"
-        ? value === form.password
-        : form.confirmPassword === value
-    );
-  }
-};
-
+    if (name === "password" || name === "confirmPassword") {
+      setPasswordMatch(
+        name === "confirmPassword"
+          ? value === form.password
+          : form.confirmPassword === value
+      );
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,18 +72,17 @@ const AddUserForm = () => {
         return;
       }
 
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .insert([
-          {
-            id: userId,
-            first_name: form.first_name,
-            last_name: form.last_name,
-            role: form.role,
-            nic: form.nic,
-            phone: form.phone,
-          },
-        ]);
+      const { error: profileError } = await supabase.from("profiles").insert([
+        {
+          id: userId,
+          first_name: form.first_name,
+          last_name: form.last_name,
+          role: form.role,
+          nic: form.nic,
+          phone: form.phone,
+          gender: form.gender, // added gender to insert
+        },
+      ]);
 
       if (profileError) {
         console.error("Profile Insert Error:", profileError.message);
@@ -100,6 +97,7 @@ const AddUserForm = () => {
         role: "",
         nic: "",
         phone: "",
+        gender: "", // reset gender too
         email: "",
         password: "",
         confirmPassword: "",
@@ -143,21 +141,21 @@ const AddUserForm = () => {
               <input type="text" id="nic" name="nic" required maxLength={12} value={form.nic} onChange={handleChange} placeholder="Enter NIC number" className="w-full p-2 border border-gray-300 rounded-md text-sm" />
             </div>
 
-          <div>
-            <label className="block font-semibold text-sm mb-1" htmlFor="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" required value={form.phone} onChange={handleChange} placeholder="Enter phone number" className="w-full p-2 border border-gray-300 rounded-md text-sm" />
-          </div>
+            <div>
+              <label className="block font-semibold text-sm mb-1" htmlFor="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" required value={form.phone} onChange={handleChange} placeholder="Enter phone number" className="w-full p-2 border border-gray-300 rounded-md text-sm" />
+            </div>
 
-          <div>
-            <label htmlFor="gender" className="block font-semibold text-sm mb-1">Gender</label>
-            <select id="gender" name="gender" className="w-full p-2 border border-gray-300 rounded-md text-sm cursor-pointer" required>
-              <option value="" disabled selected>Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
+            <div>
+              <label htmlFor="gender" className="block font-semibold text-sm mb-1">Gender</label>
+              <select id="gender" name="gender" required value={form.gender} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md text-sm cursor-pointer">
+                <option value="" disabled>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
           </div>
-        </div>  
 
           <div className="mb-2">
             <label className="block font-semibold text-sm mb-1" htmlFor="email">Email</label>
