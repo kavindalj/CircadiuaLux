@@ -2,8 +2,12 @@ import React from 'react';
 import Nav from "../components/Nav";
 import CaretakerSidebar from '@/components/CaretakerSidebar';
 import { Outlet } from 'react-router-dom';
+import useFetchProfile from '../hooks/useFetchProfile';
 
 const CaretakerDashboard = () => {
+  const profile = useFetchProfile();
+  if (!profile) return null;
+
   return (
     <div className="h-screen overflow-hidden">
       {/* Top Navigation - Always on top */}
@@ -19,7 +23,7 @@ const CaretakerDashboard = () => {
         </div>
         {/* Main Content */}
         <main className='flex-1 p-6 overflow-auto flex justify-center'>
-          <Outlet />
+          <Outlet context={{ profile }}/>
         </main>
       </div>
     </div>
