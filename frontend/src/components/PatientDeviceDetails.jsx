@@ -35,8 +35,7 @@ const PatientDeviceDetails = () => {
                 age, 
                 gender,
                 room_no, 
-                disease_description, 
-                Symptoms,
+                disease_description,
                 diseases(
                   disease_name
                 )
@@ -131,50 +130,54 @@ const PatientDeviceDetails = () => {
           </button>
         </div>
         
-        {patientError && <p className="text-red-500">{patientError}</p>}
+        
 
         {/* Display Patient Details form if 'patient' tab is active */}
-        {activeForm === "patient" && patientData && (
-          <div className="shadow-md rounded-xl border p-6 space-y-7 h-[425px]">
-            <div>
-              <p className="font-semibold ">Patient Name : {patientData.patient_name}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Age : {patientData.age}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Gender : {patientData.gender}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Room Number : {patientData.room_no}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Disease : {patientData.diseases?.disease_name}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Disease description : {patientData.disease_description}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Symptoms : {patientData.Symptoms}</p>
-            </div>
-          </div>
+        {activeForm === "patient" && (
+          <>
+            {patientError && <p className="text-red-500 mb-2">{patientError}</p>}
+            {patientData && (
+              <div className="shadow-md rounded-xl border p-6 space-y-7 h-[425px]">
+                <div>
+                  <p className="font-semibold">Patient Name : {patientData.patient_name}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Age : {patientData.age}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Gender : {patientData.gender}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Room Number : {patientData.room_no}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Disease : {patientData.diseases?.disease_name}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Disease description : {patientData.disease_description}</p>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
-        {lightingError && <p className="text-red-500">{lightingError}</p>}
-
-        {/* Display Lighting Settings form if 'lighting' tab is active */}
-        {activeForm === "lighting" && lightingData && (
-          <div className="shadow-md rounded-xl border p-6 space-y-9 h-[400px]">
-            <div>
-              <p className="font-semibold">Intensity : {lightingData.PhotopicLux} </p>
-            </div>
-            <div>
-              <p className="font-semibold">Color Temperature : {lightingData.CCT_estimated} </p>
-            </div>
-            <div>
-              <p className="font-semibold">Mel-ratio : {lightingData.mel_ratio} </p>
-            </div>
-          </div>
+        {activeForm === "lighting" && (
+          <>
+            {lightingError && <p className="text-red-500 mb-2">{lightingError}</p>}
+            {lightingData && (
+              <div className="shadow-md rounded-xl border p-6 space-y-9 h-[400px]">
+                <div>
+                  <p className="font-semibold">Intensity : {lightingData.PhotopicLux}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Color Temperature : {lightingData.CCT_estimated}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Mel-ratio : {lightingData.mel_ratio}</p>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
       </div>
