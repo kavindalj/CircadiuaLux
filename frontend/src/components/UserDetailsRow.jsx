@@ -15,9 +15,9 @@ const UserDetailsRow = ({ userData }) => {
                     {userData.role}
                 </span>
             </div>
-            <div className="w-[25%] ">{userData.full_name}</div> {/* Name */}
-            <div className="w-[25%] ">{userData.email}</div> {/* Email */}
-            <div className="w-[20%]  ">{userData.phone}</div> {/* Mobile */}
+            <div className="w-[20%] ">{userData.full_name}</div> {/* Name */}
+            <div className="w-[35%] ">{userData.email}</div> {/* Email */}
+            <div className="w-[15%]  ">{userData.phone}</div> {/* Mobile */}
         </div>
     );
 };
