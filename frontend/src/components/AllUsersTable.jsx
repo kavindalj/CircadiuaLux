@@ -66,9 +66,9 @@ const AllUsersTable = () => {
             <div className="flex text-sm font-semibold text-gray-400 border-b pb-3">
                 <div className="w-[12%] pl-4">User ID</div>
                 <div className="w-[18%] pl-5">User Type</div>
-                <div className="w-[25%]">Name</div>
-                <div className="w-[25%]">Email</div>
-                <div className="w-[20%]">Mobile</div>
+                <div className="w-[20%]">Name</div>
+                <div className="w-[35%]">Email</div>
+                <div className="w-[15%]">Mobile</div>
             </div>
 
             {fetchError && (<p>{fetchError}</p>)}
