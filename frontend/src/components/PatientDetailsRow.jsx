@@ -84,35 +84,37 @@ const PatientDetailsRow = ({patientData}) => {
                     </span>
                 </div>
                 <div className="w-[13%]">
-                    <input
+                    {currentStatus?.toLowerCase() !== "discharged" && (
+                        <input
                         type="text"
                         name="wakeTime"
-                        value={currentStatus?.toLowerCase() === "discharged" ? '' : wakeTime}
+                        value={wakeTime}
                         onChange={(e) => setWakeTime(e.target.value)}
-                        disabled={currentStatus?.toLowerCase() === "discharged"}
                         className="w-[100px] border rounded border-[#34A8DD] text-sm px-3 py-1"
                         placeholder="Wake Time"
-                    />
+                        />
+                    )}
                 </div>
-                <div className="w-[18%] flex items-center gap-2">
-                    <input
-                        type="text"
-                        name="sleepDuration"
-                        value={currentStatus?.toLowerCase() === "discharged" ? '' : sleepDuration}
-                        onChange={(e) => setSleepDuration(e.target.value)}
-                        disabled={currentStatus?.toLowerCase() === "discharged"}
-                        className="w-[100px] border rounded border-[#34A8DD] text-sm px-3 py-1"
-                        placeholder="Sleep Duration"
-                    />
+                <div className="w-[18%]">
                     {currentStatus?.toLowerCase() !== "discharged" && (
-                        isSaving ? (
+                        <div className="flex items-center gap-2">
+                        <input
+                            type="text"
+                            name="sleepDuration"
+                            value={sleepDuration}
+                            onChange={(e) => setSleepDuration(e.target.value)}
+                            className="w-[100px] border rounded border-[#34A8DD] text-sm px-3 py-1"
+                            placeholder="Sleep Duration"
+                        />
+                        {isSaving ? (
                             <div className="w-4 h-4 border-2 border-t-[#34A8DD] border-r-[#34A8DD] border-b-transparent border-l-transparent rounded-full animate-spin"></div>
                         ) : (
                             <IoMdCheckboxOutline 
                             onClick={handleSaveUpdatedTime}
                             className="cursor-pointer text-gray-500 hover:text-gray-700 text-s"
                             />
-                        )
+                        )}
+                        </div>
                     )}
                 </div>
                 <div
