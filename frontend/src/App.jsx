@@ -9,6 +9,7 @@ import AdminCards from "./components/AdminCards";
 import PasswordChangeForm from "./components/PasswordChangeForm";
 import AllUsersTable from "./components/AllUsersTable";
 import AllDevicesTable from "./components/AllDevicesTable";
+import ConnectedDevicesTable from "./components/ConnectedDevicesTable";
 import AddDeviceForm from "./components/AddDeviceForm";
 import AddUserForm from "./components/AddUserForm";
 import PatientDeviceDetails from "./components/PatientDeviceDetails";
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
         },
         {
           path: "connectedDevices",
-          element: <AllDevicesTable />,
+          element: <ConnectedDevicesTable />,
         },
         {
           path: "patientDetails",

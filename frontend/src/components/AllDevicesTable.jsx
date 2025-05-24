@@ -10,7 +10,7 @@ const AllDevicesTable = ({ filterByStatus = null }) => {
     const navigate = useNavigate();
 
     const [fetchError, setFetchError] = useState(null)
-    const [devicesData, setdevicesData] = useState([])
+    const [devicesData, setDevicesData] = useState([])
     
     const [currentPage, setCurrentPage] = useState(1)
     const [devicesPerPage] = useState(7)
@@ -46,7 +46,7 @@ const AllDevicesTable = ({ filterByStatus = null }) => {
     
                 if(error){
                     setFetchError("Could not fetch patient data");
-                    setdevicesData([]);
+                    setDevicesData([]);
                     console.log("Error fetching: " , error);
                 }
                 if (data) {
@@ -64,12 +64,11 @@ const AllDevicesTable = ({ filterByStatus = null }) => {
                         };
                     });
 			
-		    const filtered = filterByStatus
-          		? formatted.filter((device) => device.active_status.toLowerCase() === filterByStatus.toLowerCase())
-          		: formatted;
+                    const filtered = filterByStatus
+                        ? formatted.filter((device) => device.active_status.toLowerCase() === filterByStatus.toLowerCase())
+                        : formatted;
 
-
-                    setdevicesData(formatted);
+                    setDevicesData(filtered);
                     setFetchError(null);
                 }
         }
@@ -88,7 +87,7 @@ const AllDevicesTable = ({ filterByStatus = null }) => {
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-left text-xl font-bold mb-1">All Devices</h2>
                 <button 
-                    className="cursor-pointer bg-sky-500 text-white font-bold px-10 py-1.5 rounded hover:bg-sky-600 transition"
+                    className="bg-sky-500 text-white font-bold px-10 py-1.5 rounded hover:bg-sky-600 transition"
                     onClick={() => navigate('/dashboardAdmin/addDevice')}
                 >
                     Add Device
