@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const { profile } = useOutletContext();
   const [currentTime, setCurrentTime] = useState(new Date());
-  //To format the show_id as USRXXXX
-    const formatUserId = (id) => {
-        if (!id && id !== 0) return '';
-        return `USR${String(id).padStart(3, '0')}`;
-    };
+  const navigate = useNavigate(); // useNavigate for SPA routing
+
+  // Format user ID
+  const formatUserId = (id) => {
+    if (!id && id !== 0) return "";
+    return `USR${String(id).padStart(3, "0")}`;
+  };
 
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -24,8 +26,16 @@ const UserProfile = () => {
     });
   };
 
+  const handleChangePassword = () => {
+    if (profile?.role === "admin") {
+      navigate("/dashboardAdmin/change-password");
+    } else if (profile?.role === "caretaker") {
+      navigate("/dashboard/change-password");
+    }
+  };
+
   return (
-    <div className="w-full px-10 py-4">
+    <div className="w-full px-10 py-1">
       {/* Greeting & Time */}
       <div className="max-w-2xl mx-auto mt-6 mb-6 text-left">
         <h1 className="text-4xl font-semibold text-gray-700">
@@ -43,9 +53,7 @@ const UserProfile = () => {
 
       {/* Profile Card */}
       <div className="max-w-2xl mx-auto bg-white">
-        {/* Avatar + Role + Button */}
         <div className="grid grid-cols-1 md:grid-cols-2 items-start mb-6">
-          {/* Left side: avatar and info */}
           <div className="flex items-center gap-4">
             <img
               src="https://randomuser.me/api/portraits/women/44.jpg"
@@ -60,7 +68,6 @@ const UserProfile = () => {
             </div>
           </div>
 
-          {/* Right side: button aligned to right column */}
           <div className="flex justify-end">
             <button className="mt-[27px] mr-[37px] bg-[#34A8DD] font-bold text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]">
               Edit Profile Picture
@@ -70,7 +77,6 @@ const UserProfile = () => {
 
         {/* Form Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 text-left">
-          {/* Left Column */}
           <div className="space-y-3">
             <div>
               <label className="block text-sm font-semibold text-gray-700">
@@ -104,14 +110,13 @@ const UserProfile = () => {
             </div>
           </div>
 
-          {/* Right Column */}
           <div className="space-y-3">
             <div>
               <label className="block text-sm font-semibold text-gray-700">
                 User ID
               </label>
               <input
-                placeholder = {formatUserId(profile?.show_id)}
+                placeholder={formatUserId(profile?.show_id)}
                 className="w-full max-w-[300px] h-[36px] bg-gray-100 rounded outline-none pl-1"
                 readOnly
               />
@@ -144,13 +149,7 @@ const UserProfile = () => {
       <div className="max-w-2xl mx-auto text-left mt-6">
         <button
           className="bg-[#34A8DD] font-bold text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]"
-          onClick={() => {
-            if (profile?.role === "admin") {
-              window.location.href = "/dashboardAdmin/change-password";
-            } else if (profile?.role === "caretaker") {
-              window.location.href = "/dashboard/change-password";
-            }
-          }}
+          onClick={handleChangePassword}
         >
           Change Password
         </button>
