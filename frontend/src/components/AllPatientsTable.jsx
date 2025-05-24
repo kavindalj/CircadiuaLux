@@ -20,7 +20,7 @@ const AllPatientsTable = () => {
         const fetchPatientsData = async () => {
             const { data,error } = await supabase
                 .from("patients")
-                .select("id,patient_name, room_no, gender, patient_status")
+                .select("id,patient_name, room_no, gender, patient_status, wake_time, sleep_duration ")
                 .order("patient_name", { ascending: true });
 
                 if(error){
@@ -56,11 +56,14 @@ const AllPatientsTable = () => {
             </div>
 
             {/* Table Headers */}
-            <div className="flex text-sm font-semibold text-gray-400 border-b pb-2">
-                <div className="w-1/5">Name</div>
-                <div className="w-1/5">Room</div>
-                <div className="w-1/5">Gender</div>
-                <div className="w-1/5">Status</div>
+            <div className="flex text-sm font-semibold text-gray-400 border-b pb-2 text-left">
+                <div className="w-[14%]">Name</div>
+                <div className="w-[14%]">Room</div>
+                <div className="w-[13%]">Gender</div>
+                <div className="w-[18%]">Status</div>
+                <div className="w-[13%]">Wakeup time</div>
+                <div className="w-[18%]">Sleep duration</div>
+                
             </div>
 
             {fetchError && (<p>{fetchError}</p>)}
