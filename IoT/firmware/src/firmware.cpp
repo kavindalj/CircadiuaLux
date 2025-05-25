@@ -4,18 +4,9 @@
 #include "getdetails.h"   // Include supabase details header
 #include "sensor.h"       // Include sensor header
 #include "lightcontrol.h" // Include lightcontrol header
+#include "wifimanager.h" // Include WiFi manager header
 
 struct tm timeinfo;
-
-void connectToWiFi() {
-  WiFi.begin(ssid, psswd);
-  Serial.println("Waiting for WiFi connection...");
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println("WiFi connected");
-}
 
 void connectNTPServers() {
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
@@ -42,28 +33,29 @@ void setup(){
   Serial.println("Firmware Starting...");
 
   // Connecting to Wi-Fi
-  connectToWiFi();
+  // connectToWiFi();
 
   // Wait for time to be set
-  connectNTPServers();
+  // connectNTPServers();
 
   // Beginning Supabase Connection
-  db.begin(supabase_url, anon_key);
+  // db.begin(supabase_url, anon_key);
 
   // Print the time
-  Serial.println("Current time:");
-  Serial.println(&timeinfo, "%Y-%m-%d %H:%M:%S");
+  // Serial.println("Current time:");
+  // Serial.println(&timeinfo, "%Y-%m-%d %H:%M:%S");
 
   // setupSensor(); // Initialize the sensor module
   // setupCCTPins(); // Initialize the CCT pins
 
-  String time = "01:30";
+  // String time = "03:30";
   
-  SupabaseData data = getDataFromSupabase(device_id,time);
+  // SupabaseData data = getDataFromSupabase(device_id,time);
 
-  Serial.println(data.sleep_time);
-  Serial.println(data.PhotopicLux);
-  Serial.println(data.CCT_estimated);
+  // Serial.println(data.sleep_time);
+  // Serial.println(data.PhotopicLux);
+  // Serial.println(data.CCT_estimated);
+  startWiFiManager(); // Start the web server
 }
 
 void loop() {
