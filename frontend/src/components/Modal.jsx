@@ -5,21 +5,52 @@ function Modal({ patientId, currentStatus, onClose, onStatusUpdated }) {
     const [newStatus, setNewStatus] = useState(currentStatus);
 
     const handleUpdate = async () => {
+    const formattedStatus = newStatus.charAt(0).toUpperCase() + newStatus.slice(1).toLowerCase();
 
-        const formattedStatus = newStatus.charAt(0).toUpperCase() + newStatus.slice(1).toLowerCase();
-
-        const { error } = await supabase
+    if (formattedStatus === "Admitted") {
+        const { data: currentPatientData, error: fetchError } = await supabase
             .from('patients')
-            .update({ patient_status: formattedStatus })
+            .select('room_no')
             .eq('id', patientId)
+            .single();
 
-        if (error) {
-            alert("Failed to update status");
-        } else {
-            onStatusUpdated(newStatus);
-            onClose();
+        if (fetchError || !currentPatientData) {
+            alert("Error fetching patient data");
+            return;
+        }
+
+        const roomNo = currentPatientData.room_no;
+
+        const { data: admittedPatients, error: checkError } = await supabase
+            .from('patients')
+            .select('id')
+            .eq('room_no', roomNo)
+            .eq('patient_status', 'Admitted')
+            .neq('id', patientId); 
+        if (checkError) {
+            alert("Error checking room occupancy");
+            return;
+        }
+
+        if (admittedPatients.length > 0) {
+            alert(`Room ${roomNo} is already occupied by another admitted patient.`);
+            return; 
         }
     }
+
+
+    const { error } = await supabase
+        .from('patients')
+        .update({ patient_status: formattedStatus })
+        .eq('id', patientId);
+
+    if (error) {
+        alert("Failed to update status");
+    } else {
+        onStatusUpdated(formattedStatus);
+        onClose();
+    }
+ }
 
     return (
         <div
