@@ -8,6 +8,8 @@ function AdminCards() {
   const { profile } = useOutletContext();
   const [onlinePatientsCount, setOnlinePatientsCount] = useState(0);
   const [activeCaretakersCount, setActiveCaretakersCount] = useState(0);
+  const [totalDevicesCount, setTotalDevicesCount] = useState(0);
+  const [pendingIssuesCount, setPendingIssuesCount] = useState(0);
 
   const email = Cookies.get("userEmail") || "Admin";
   const role = Cookies.get("userRole") || "admin";
@@ -37,6 +39,28 @@ function AdminCards() {
       } else {
         setActiveCaretakersCount(caretakersData?.length || 0);
       }
+
+      // Fetch total devices count
+      const { data: devicesData, error: devicesError } = await supabase
+        .from("devices")
+        .select("device_id", { count: 'exact' });
+
+      if (devicesError) {
+        console.error("Error fetching devices count:", devicesError);
+      } else {
+        setTotalDevicesCount(devicesData?.length || 0);
+      }
+
+      // Fetch total issues count
+      const { data: issuesData, error: issuesError } = await supabase
+        .from("issues")
+        .select("id", { count: 'exact' });
+
+      if (issuesError) {
+        console.error("Error fetching issues count:", issuesError);
+      } else {
+        setPendingIssuesCount(issuesData?.length || 0);
+      }
     };
 
     fetchCounts();
@@ -49,8 +73,8 @@ function AdminCards() {
       </h1>
       <div className="flex flex-wrap gap-10">
         <Card title="Active Caretakers" count={activeCaretakersCount.toString()} />
-        <Card title="Connected Devices" count={onlinePatientsCount.toString()} />
-        <Card title="Pending Issues" count="03" />
+        <Card title="Connected Devices" count={totalDevicesCount.toString()} />
+        <Card title="Pending Issues" count={pendingIssuesCount.toString()} />
       </div>
     </div>
   )

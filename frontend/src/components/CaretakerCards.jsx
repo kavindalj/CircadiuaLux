@@ -7,26 +7,38 @@ import { supabase } from "../supabaseClient";
 function CaretakerCards() {
   const { profile } = useOutletContext();
   const [activePatientsCount, setActivePatientsCount] = useState(0);
+  const [totalDevicesCount, setTotalDevicesCount] = useState(0);
 
   const email = Cookies.get("userEmail") || "Caretaker";
   const role = Cookies.get("userRole") || "caretaker";
 
   useEffect(() => {
-    const fetchActivePatientsCount = async () => {
-      const { data, error } = await supabase
+    const fetchCounts = async () => {
+      // Fetch active patients count
+      const { data: patientsData, error: patientsError } = await supabase
         .from("patients")
         .select("id", { count: 'exact' })
         .eq("patient_status", "Admitted");
 
-      if (error) {
-        console.error("Error fetching active patients count:", error);
-        return;
+      if (patientsError) {
+        console.error("Error fetching active patients count:", patientsError);
+      } else {
+        setActivePatientsCount(patientsData?.length || 0);
       }
 
-      setActivePatientsCount(data?.length || 0);
+      // Fetch total devices count
+      const { data: devicesData, error: devicesError } = await supabase
+        .from("devices")
+        .select("device_id", { count: 'exact' });
+
+      if (devicesError) {
+        console.error("Error fetching devices count:", devicesError);
+      } else {
+        setTotalDevicesCount(devicesData?.length || 0);
+      }
     };
 
-    fetchActivePatientsCount();
+    fetchCounts();
   }, []);
 
   return (
@@ -36,7 +48,7 @@ function CaretakerCards() {
       </h1>
       <div className="flex flex-wrap gap-10">
         <Card title="Active Patients" count={activePatientsCount.toString()} />
-        <Card title="Connected Devices" count="42" />
+        <Card title="Connected Devices" count={totalDevicesCount.toString()} />
       </div>
     </div>
   );
