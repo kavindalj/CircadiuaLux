@@ -1,12 +1,63 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include <EEPROM.h>
 #include <ESPAsyncWebServer.h>
 #include <ArduinoJson.h>
 #include "config.h"
 #include "wifimanager.h"
 
-void connectToWiFi() {
-  WiFi.begin(ssid, psswd);
+#define EEPROM_SIZE 128
+#define SSID_ADDR   0
+#define PASS_ADDR   32
+#define MAX_SSID_LEN 32
+#define MAX_PASS_LEN 64
+
+WiFiCredentials readWiFiCredentialsFromEEPROM() {
+    WiFiCredentials wifiCredentials;
+    EEPROM.begin(EEPROM_SIZE);
+    char ssidBuf[MAX_SSID_LEN + 1];
+    char passBuf[MAX_PASS_LEN + 1];
+    for (int i = 0; i < MAX_SSID_LEN; ++i) {
+        ssidBuf[i] = EEPROM.read(SSID_ADDR + i);
+    }
+    ssidBuf[MAX_SSID_LEN] = 0;
+    for (int i = 0; i < MAX_PASS_LEN; ++i) {
+        passBuf[i] = EEPROM.read(PASS_ADDR + i);
+    }
+    passBuf[MAX_PASS_LEN] = 0;
+    wifiCredentials.ssid = String(ssidBuf);
+    wifiCredentials.password = String(passBuf);
+    EEPROM.end();
+    return wifiCredentials;
+}
+
+void saveWiFiCredentialsToEEPROM(const String& ssid, const String& password) {
+    EEPROM.begin(EEPROM_SIZE);
+    // Write SSID
+    for (int i = 0; i < MAX_SSID_LEN; ++i) {
+        if (i < ssid.length()) {
+            EEPROM.write(SSID_ADDR + i, ssid[i]);
+        } else {
+            EEPROM.write(SSID_ADDR + i, 0);
+        }
+    }
+    // Write Password
+    for (int i = 0; i < MAX_PASS_LEN; ++i) {
+        if (i < password.length()) {
+            EEPROM.write(PASS_ADDR + i, password[i]);
+        } else {
+            EEPROM.write(PASS_ADDR + i, 0);
+        }
+    }
+    EEPROM.commit();
+    EEPROM.end();
+}
+
+void connectToWiFi(WiFiCredentials wifiCredentials) {
+  // Clean up old connections and connect to new WiFi
+  WiFi.disconnect();
+  delay(100);
+  WiFi.begin(wifiCredentials.ssid, wifiCredentials.password);
   Serial.println("Waiting for WiFi connection...");
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
@@ -29,6 +80,7 @@ void setupAP(){
   Serial.print("IP Address: ");
   Serial.println(WiFi.softAPIP());
 }
+
 
 char wifiwebpage[] PROGMEM = R"=====(
 
@@ -283,8 +335,11 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     Serial.println("SSID: " + receivedSSID);
     Serial.println("Password: " + receivedPassword);
 
-    // Save to flash or EEPROM here
-    // ESP.restart();
+    // Save to flash memory
+    saveWiFiCredentialsToEEPROM(receivedSSID, receivedPassword);
+    Serial.println("Rebooting ESP32...");
+    delay(1000);
+    ESP.restart();
   }
 }
 
