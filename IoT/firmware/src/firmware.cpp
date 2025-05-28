@@ -32,6 +32,11 @@ void setup(){
   }
   Serial.println("Firmware Starting...");
 
+  pinMode(RESET_BTN_PIN,INPUT_PULLUP);  // Initialize the Reset Button pin
+  pinMode(AP_LED_PIN, OUTPUT); // Initialize the Access Point LED pin
+
+  digitalWrite(AP_LED_PIN, LOW); // Turn off the Access Point LED initially
+
   // Connecting to Wi-Fi
   // connectToWiFi();
 
@@ -55,10 +60,16 @@ void setup(){
   // Serial.println(data.sleep_time);
   // Serial.println(data.PhotopicLux);
   // Serial.println(data.CCT_estimated);
-  startWiFiManager(); // Start the web server
+  // startWiFiManager(); // Start the web server
+  WiFiCredentials WiFiCredentials = readWiFiCredentialsFromEEPROM();
+  Serial.print("SSID: "); Serial.println(WiFiCredentials.ssid);
+  Serial.print("Password: "); Serial.println(WiFiCredentials.password);
+  connectToWiFi(WiFiCredentials); // Connect to Wi-Fi with credentials from EEPROM
 }
 
 void loop() {
+
+  resetCheckAndStartWiFiManager();
   // SensorData sensorReadings = readSensorValues();
 
   // if (sensorReadings.isValid) {

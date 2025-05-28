@@ -10,3 +10,5 @@ struct WiFiCredentials {
 WiFiCredentials readWiFiCredentialsFromEEPROM();
 void connectToWiFi(WiFiCredentials wifiCredentials);
 void startWiFiManager();
+void setupAP();
+void resetCheckAndStartWiFiManager();

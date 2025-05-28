@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <EEPROM.h>
 #include <ESPAsyncWebServer.h>
+#include <ESPmDNS.h>
 #include <ArduinoJson.h>
 #include "config.h"
 #include "wifimanager.h"
@@ -53,17 +54,47 @@ void saveWiFiCredentialsToEEPROM(const String& ssid, const String& password) {
     EEPROM.end();
 }
 
+void resetCheckAndStartWiFiManager() {
+    static unsigned long buttonPressStart = 0;
+    static bool apStarted = false;
+
+    if (digitalRead(RESET_BTN_PIN) == LOW) {
+        if (buttonPressStart == 0) {
+            buttonPressStart = millis(); // Button just pressed
+        } else if (!apStarted && (millis() - buttonPressStart >= 3000)) {
+            Serial.println("Reset button held for 3 seconds. Setting up Access Point...");
+            startWiFiManager();
+            apStarted = true; // Prevent retriggering
+        }
+    } else {
+        buttonPressStart = 0;
+        apStarted = false;
+    }
+}
+
 void connectToWiFi(WiFiCredentials wifiCredentials) {
   // Clean up old connections and connect to new WiFi
   WiFi.disconnect();
   delay(100);
   WiFi.begin(wifiCredentials.ssid, wifiCredentials.password);
   Serial.println("Waiting for WiFi connection...");
+
+  int statusStartWiFiManager = 0;
+
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
+    if (digitalRead(RESET_BTN_PIN) == HIGH && statusStartWiFiManager == 0) {
+        Serial.print(".");
+        digitalWrite(AP_LED_PIN, HIGH); // Blink LED when tring to connect to WiFi
+        delay(500);
+        digitalWrite(AP_LED_PIN, LOW);
+        delay(500);
+    } else {
+        statusStartWiFiManager = 1;
+        resetCheckAndStartWiFiManager();
+    }
   }
   Serial.println("WiFi connected.");
+  digitalWrite(AP_LED_PIN, LOW);
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
 }
@@ -77,8 +108,15 @@ void setupAP(){
   // Create Access Point
   WiFi.softAP("CircadiaLux-Setup", "");
   Serial.println("Access Point Started");
+  digitalWrite(AP_LED_PIN, HIGH); // Turn on the AP LED to indicate AP mode
   Serial.print("IP Address: ");
   Serial.println(WiFi.softAPIP());
+  // Start mDNS responder
+  if (MDNS.begin("circadialux")) { // "circadialux.local"
+    Serial.println("mDNS responder started: http://circadialux.local");
+  } else {
+    Serial.println("Error setting up mDNS responder!");
+  }
 }
 
 
@@ -251,7 +289,7 @@ char wifiwebpage[] PROGMEM = R"=====(
         var successModal = document.getElementById("successModal");
         var successMessage = document.getElementById("successMessage");
 
-        var message = `Please take a moment. This will automatically connect <strong>${SSID}</strong> Wi-Fi.`;
+        var message = `Please take a moment. This will reboot device and automatically connect to <strong>${SSID}</strong>`;
 
         successMessage.innerHTML = message;
         successModal.style.display = "block";
@@ -324,7 +362,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   String message = String((char *)data);
   Serial.println("Received message: " + message);
 
-  JsonDocument doc; // Use JsonDocument instead of DynamicJsonDocument
+  JsonDocument doc;
   DeserializationError error = deserializeJson(doc, message);
 
   if (!error) {
@@ -335,7 +373,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     Serial.println("SSID: " + receivedSSID);
     Serial.println("Password: " + receivedPassword);
 
-    // Save to flash memory
+    // Save to flash memory and reboot device
     saveWiFiCredentialsToEEPROM(receivedSSID, receivedPassword);
     Serial.println("Rebooting ESP32...");
     delay(1000);
@@ -347,7 +385,7 @@ void handleWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
   if (type == WS_EVT_CONNECT) {
     Serial.println("WebSocket client connected");
     // Send device_id to client
-    JsonDocument doc; // Use JsonDocument instead of DynamicJsonDocument
+    JsonDocument doc;
     doc["device_id"] = device_id;
     String msg;
     serializeJson(doc, msg);
@@ -359,7 +397,6 @@ void handleWebSocketEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, 
   }
 }
 
-// Add these variables at the top, outside any function
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
