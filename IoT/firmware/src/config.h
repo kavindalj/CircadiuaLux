@@ -3,6 +3,16 @@
 //Device ID
 extern String device_id;
 
+// PID Constants
+// Color Temperature PID
+extern double Kp_cct;
+extern double Ki_cct;
+extern double Kd_cct;
+// Lux/Brightness PID
+extern double Kp_lux;
+extern double Ki_lux;
+extern double Kd_lux;
+
 // Sensor LED
 extern const int SENSOR_LED_PIN;
 
