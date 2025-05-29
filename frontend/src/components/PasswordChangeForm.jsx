@@ -146,7 +146,7 @@ function PasswordChangeForm() {
 
           <button
             type="submit"
-            className="w-full mt-3 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
+            className="w-full shadow-md  mt-3 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
           >
             Save password
           </button>
