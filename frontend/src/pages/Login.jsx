@@ -109,15 +109,15 @@ const Login = () => {
             </span>
           </div>
 
-          <div className="text-right text-xs cursor-pointer mb-3 text-[#34A8DD]">
+          <div className="text-right text-xs cursor-pointer text-[#34A8DF] mb-3 text-[#34A8DD]">
             Forgot your password?
           </div>
 
           <button
             type="submit"
-            className="w-full py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
+            className="w-full py-2 shadow-md font-bold text-white rounded-md cursor-pointer bg-gradient-to-r from-[#36AFDE] to-[#74DAF6] hover:brightness-90 focus:ring-blue-300 transition-all"
           >
-            {role === "admin" ? "Admin Login" : "Caretaker Login"}
+            {role === "admin" ? "Login as an Admin" : "Login as a Caretaker"}
           </button>
         </form>
       </div>

@@ -22,14 +22,14 @@ const PatientDeviceDetails = () => {
   const [lightingError, setLightingError] = useState(null);
 
   //Fetch users details
-    useEffect(() => {
-        const fetchpatientData = async () => {
-          
-          if (!patientId) return;
+  useEffect(() => {
+    const fetchpatientData = async () => {
 
-          const { data,error } = await supabase
-              .from("patients")
-              .select(`
+      if (!patientId) return;
+
+      const { data, error } = await supabase
+        .from("patients")
+        .select(`
                 id,
                 patient_name, 
                 age, 
@@ -40,65 +40,65 @@ const PatientDeviceDetails = () => {
                   disease_name
                 )
               `)
-              .eq("id", patientId)
-              .single();
-      
-              if(error){
-                  setPatientError("Could not fetch patient data");
-                  setPatientData(null);
-                  console.log("Error fetching: " , error);
-              }
-              if (data) {
-                  console.log("Fetched patients:", data);
-                  setPatientData (data);
-                  setPatientError(null);
-                }
-        }
-        fetchpatientData();
-    }, [patientId]);
+        .eq("id", patientId)
+        .single();
 
-    useEffect(() => {
-        const fetchlightingData = async () => {
-          
-          if (!patientId) return;
+      if (error) {
+        setPatientError("Could not fetch patient data");
+        setPatientData(null);
+        console.log("Error fetching: ", error);
+      }
+      if (data) {
+        console.log("Fetched patients:", data);
+        setPatientData(data);
+        setPatientError(null);
+      }
+    }
+    fetchpatientData();
+  }, [patientId]);
 
-          const timeZone = import.meta.env.VITE_TIMEZONE || 'Asia/Colombo';
-          const time = new Date().toLocaleString("en-US", { timeZone });
-          const current = new Date(time);
-          const hours = current.getHours().toString().padStart(2, '0');
-          const minutes = current.getMinutes() < 30 ? '00' : '30';
-          const blockTime = `${hours}:${minutes}`;
+  useEffect(() => {
+    const fetchlightingData = async () => {
 
-          const { data,error } = await supabase
-              .from("lighting_predictions")
-              .select(`
+      if (!patientId) return;
+
+      const timeZone = import.meta.env.VITE_TIMEZONE || 'Asia/Colombo';
+      const time = new Date().toLocaleString("en-US", { timeZone });
+      const current = new Date(time);
+      const hours = current.getHours().toString().padStart(2, '0');
+      const minutes = current.getMinutes() < 30 ? '00' : '30';
+      const blockTime = `${hours}:${minutes}`;
+
+      const { data, error } = await supabase
+        .from("lighting_predictions")
+        .select(`
                 id,
                 PhotopicLux, 
                 mel_ratio, 
                 CCT_estimated,
                 time
               `)
-              .eq("patient_id", patientId)
-              .eq("time", blockTime)
-              .single();
-      
-              if(error){
-                  setLightingError("Could not fetch lighting data");
-                  setLightingData(null);
-                  console.log("Error fetching: " , error);
-              }
-              if (data) {
-                  console.log("Fetched lighting data:", data);
-                  setLightingData(data);
-                  setLightingError(null);
-                }
-        }
-        fetchlightingData();
-    }, [patientId]);
+        .eq("patient_id", patientId)
+        .eq("time", blockTime)
+        .single();
+
+      if (error) {
+        setLightingError("Could not fetch lighting data");
+        setLightingData(null);
+        console.log("Error fetching: ", error);
+      }
+      if (data) {
+        console.log("Fetched lighting data:", data);
+        setLightingData(data);
+        setLightingError(null);
+      }
+    }
+    fetchlightingData();
+  }, [patientId]);
 
   return (
-    
- <div className="w-full h-[70vh] px-15 py-7 flex flex-col items-start">
+
+    <div className="w-full h-[70vh] px-15 py-7 flex flex-col items-start">
 
       {/* Main container for buttons and forms */}
       <div className="w-full max-w-[350px] mt-1">
@@ -120,17 +120,17 @@ const PatientDeviceDetails = () => {
             className={`w-[300px] h-[40px] text-sm md:text-base px-1 py-1 font-medium rounded-lg  
               ${isDischarged
                 ? 'cursor-not-allowed text-gray-400 bg-gray-100'
-                : activeForm === "lighting" 
+                : activeForm === "lighting"
                   ? `${activeTextColor} bg-gray-100`
                   : `${inactiveTextColor}`
               }`}
-            title={isDischarged ? 'Lighting data is not available for discharged patients' : ''}  
+            title={isDischarged ? 'Lighting data is not available for discharged patients' : ''}
           >
             Lighting Settings
           </button>
         </div>
-        
-        
+
+
 
         {/* Display Patient Details form if 'patient' tab is active */}
         {activeForm === "patient" && (

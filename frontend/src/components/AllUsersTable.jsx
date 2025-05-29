@@ -55,7 +55,7 @@ const AllUsersTable = () => {
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-left text-xl font-bold mb-2">All Users</h2>
                 <button 
-                    className="bg-sky-500 cursor-pointer text-white font-bold px-6 py-1 rounded hover:bg-sky-600 transition"
+                    className="bg-sky-500 shadow-md px-6 cursor-pointer rounded-md text-white font-bold px-6 py-1 bg-gradient-to-r from-[#36AFDE] to-[#74DAF6] text-white  hover:brightness-90"
                     onClick={() => navigate('/dashboardAdmin/addUser')}
                 >
                     Add User
@@ -64,11 +64,11 @@ const AllUsersTable = () => {
 
             {/* Table Headers */}
             <div className="flex text-sm font-semibold text-gray-400 border-b pb-3">
-                <div className="w-[12%] pl-4">User ID</div>
-                <div className="w-[18%] pl-5">User Type</div>
-                <div className="w-[20%]">Name</div>
-                <div className="w-[35%]">Email</div>
-                <div className="w-[15%]">Mobile</div>
+                <div className="w-[12%] pl-5">User ID</div>
+                <div className="w-[18%] pl-8">User Type</div>
+                <div className="w-[20%] pl-13">Name</div>
+                <div className="w-[30%] pl-18">Email</div>
+                <div className="w-[0%] pl-13">Mobile</div>
             </div>
 
             {fetchError && (<p>{fetchError}</p>)}
