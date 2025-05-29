@@ -155,7 +155,7 @@ const AddDeviceForm = () => {
 
         <button
           type="submit"
-          className="w-full mt-4 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]"
+          className="w-full mt-4 py-2 cursor-pointer bg-gradient-to-r from-[#36AFDE] to-[#74DAF6] text-white hover:brightness-90 focus:outline-none font-bold focus:ring-4 focus:ring-blue-300 rounded-md transition-all"
         >
           Add Device
         </button>

@@ -18,58 +18,62 @@ import AddPatientForm from "./components/AddPatientForm";
 import Modal from "./components/Modal";
 import UserProfile from "./components/UserProfile";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
 
-    {
-      path: "/",
-      element: <Login />,
-    },
-
-    // Protected route
-    { 
-      element:<ProtectedRoute allowedRoles={["caretaker"]}/>,
-      children: [
-        {
-          path: "/dashboard",
-          element: <Dashboard />,
-          children: [
-            {
-              index: true,
-              element: <CaretakerCards />,
-            },
-            {
-              path: "patientDetails",
-              element: <AllPatientsTable/>,
-            },
-            {
-              path: "modal",
-              element: <Modal />,
-            },
-            {
-              path: "addPatient",
-              element: <AddPatientForm/>,
-            },
-            {
-              path: "seeMorePatient",
-              element: <PatientDeviceDetails />,
-            },
-            {
-              path: "settings",
-              element: <UserProfile />,
-            },
-            {
-            path: "change-password",   
+  // Protected route
+  {
+    element: <ProtectedRoute allowedRoles={["caretaker"]} />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+        children: [
+          {
+            index: true,
+            element: <CaretakerCards />,
+          },
+          {
+            path: "patientDetails",
+            element: <AllPatientsTable />,
+          },
+          {
+            path: "modal",
+            element: <Modal />,
+          },
+          {
+            path: "addPatient",
+            element: <AddPatientForm />,
+          },
+          {
+            path: "seeMorePatient",
+            element: <PatientDeviceDetails />,
+          },
+          {
+            path: "settings",
+            element: <UserProfile />,
+          },
+          {
+            path: "change-password",
             element: <PasswordChangeForm />,
-            },
-          ]
-        },
-      ],
-    }, 
+          },
+        ]
+      },
+    ],
+  },
 
-    {
-      element: <ProtectedRoute allowedRoles={["admin"]} />,
-      children: [
+  {
+    element: <ProtectedRoute allowedRoles={["admin"]} />,
+    children: [
       {
         path: "/dashboardAdmin",
         element: <DashboardAdmin />,
@@ -100,10 +104,10 @@ const router = createBrowserRouter([
           },
           {
             path: "settings",
-            element: <UserProfile />, 
+            element: <UserProfile />,
           },
           {
-            path: "change-password", 
+            path: "change-password",
             element: <PasswordChangeForm />,
           },
         ],
@@ -111,13 +115,13 @@ const router = createBrowserRouter([
     ],
   },
 
-      
 
-    //public route
-    {
-      path: "*",
-      element: <Login />,
-    },
+
+  //public route
+  {
+    path: "*",
+    element: <Login />,
+  },
 
 ]);
 
