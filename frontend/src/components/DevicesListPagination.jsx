@@ -14,7 +14,7 @@ const DevicesListPagination = ({ totalDevices, devicesPerPage, setCurrentPage, c
                 <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`cursor-pointer shadow-md bg-gradient-to-r from-[#36AFDE] to-[#74DAF6] text-white hover:brightness-90 focus:outline-none text-bold focus:ring-4 focus:ring-blue-300 px-3 py-1 border rounded transition-all ${page === currentPage ? 'bg-[#73D9F6] hover:bg-[#056c9c] text-white' : 'bg-white text-gray-800 border-[#34A8DD] hover:bg-gray-100'}`}
+                    className={`px-3 py-1 border rounded cursor-pointer ${page === currentPage ? 'bg-[#73D9F6] shadow-md hover:bg-[#056c9c] text-white' : 'bg-white text-gray-800 border-[#34A8DD] hover:bg-gray-100'}`}
                 >
                     {page}
                 </button>
