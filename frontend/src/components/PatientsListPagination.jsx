@@ -14,7 +14,7 @@ const PatientsListPagination = ({totalPatients,patientsPerPage,setCurrentPage, c
                 <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`px-3 py-1 border rounded cursor-pointer ${page === currentPage ? 'bg-[#34A8DD] hover:bg-[#056c9c] text-white' : 'bg-white text-gray-800 border-[#34A8DD] hover:bg-gray-100'}`}
+                className={`px-3 py-1 border rounded cursor-pointer ${page === currentPage ? 'bg-[#73D9F6] shadow-md hover:bg-[#056c9c] text-white' : 'bg-white text-gray-800 border-[#34A8DD] hover:bg-gray-100'}`}
                 >
                 {page}
                 </button>

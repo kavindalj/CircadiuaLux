@@ -65,8 +65,8 @@ const PatientDetailsRow = ({patientData}) => {
         <>
             <div className="flex items-center border-b py-3  hover:bg-gray-50 transition duration-150 text-left">
                 <div className="w-[14%]">{patientData.patient_name}</div>
-                <div className="w-[14%]">{patientData.room_no}</div>
-                <div className="w-[13%]">{patientData.gender}</div>
+                <div className="w-[12%]">{patientData.room_no}</div>
+                <div className="w-[10%]">{patientData.gender}</div>
                 <div className="w-[18%] flex items-center gap-2">
                     <span
                         className={`w-[100px] inline-block text-center 
@@ -103,7 +103,7 @@ const PatientDetailsRow = ({patientData}) => {
                             name="sleepDuration"
                             value={sleepDuration}
                             onChange={(e) => setSleepDuration(e.target.value)}
-                            className="w-[100px] border rounded border-[#34A8DD] text-sm px-3 py-1"
+                            className="w-[95px] border rounded border-[#34A8DD] text-sm px-3 py-1"
                             placeholder="Sleep Duration"
                         />
                         {isSaving ? (

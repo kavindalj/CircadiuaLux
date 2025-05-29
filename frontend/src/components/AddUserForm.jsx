@@ -90,8 +90,8 @@ const AddUserForm = () => {
           alert("Failed to add user. This email is already registered.");
         } else {
           alert("Failed to add user: " + profileError.message);
-       }
-       return;
+        }
+        return;
       }
 
       alert("User added successfully!");
@@ -177,7 +177,10 @@ const AddUserForm = () => {
             </div>
           </div>
 
-          <button type="submit" className="w-full mt-2 py-2 font-bold text-white rounded-md bg-[#34A8DD] hover:bg-[#056c9c] transition-all">
+          <button
+            className="cursor-pointer bg-gradient-to-r from-[#36AFDE] to-[#74DAF6] text-white hover:brightness-90 focus:outline-none font-bold focus:ring-4 focus:ring-blue-300 w-full mt-2 py-2 rounded-md transition-all"
+            type="submit"
+          >
             Add User
           </button>
         </form>

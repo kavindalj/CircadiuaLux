@@ -4,18 +4,9 @@
 #include "getdetails.h"   // Include supabase details header
 #include "sensor.h"       // Include sensor header
 #include "lightcontrol.h" // Include lightcontrol header
+#include "wifimanager.h" // Include WiFi manager header
 
 struct tm timeinfo;
-
-void connectToWiFi() {
-  WiFi.begin(ssid, psswd);
-  Serial.println("Waiting for WiFi connection...");
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println("WiFi connected");
-}
 
 void connectNTPServers() {
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
@@ -41,32 +32,44 @@ void setup(){
   }
   Serial.println("Firmware Starting...");
 
+  pinMode(RESET_BTN_PIN,INPUT_PULLUP);  // Initialize the Reset Button pin
+  pinMode(AP_LED_PIN, OUTPUT); // Initialize the Access Point LED pin
+
+  digitalWrite(AP_LED_PIN, LOW); // Turn off the Access Point LED initially
+
   // Connecting to Wi-Fi
-  connectToWiFi();
+  // connectToWiFi();
 
   // Wait for time to be set
-  connectNTPServers();
+  // connectNTPServers();
 
   // Beginning Supabase Connection
-  db.begin(supabase_url, anon_key);
+  // db.begin(supabase_url, anon_key);
 
   // Print the time
-  Serial.println("Current time:");
-  Serial.println(&timeinfo, "%Y-%m-%d %H:%M:%S");
+  // Serial.println("Current time:");
+  // Serial.println(&timeinfo, "%Y-%m-%d %H:%M:%S");
 
   // setupSensor(); // Initialize the sensor module
   // setupCCTPins(); // Initialize the CCT pins
 
-  String time = "01:30";
+  // String time = "03:30";
   
-  SupabaseData data = getDataFromSupabase(device_id,time);
+  // SupabaseData data = getDataFromSupabase(device_id,time);
 
-  Serial.println(data.sleep_time);
-  Serial.println(data.PhotopicLux);
-  Serial.println(data.CCT_estimated);
+  // Serial.println(data.sleep_time);
+  // Serial.println(data.PhotopicLux);
+  // Serial.println(data.CCT_estimated);
+  // startWiFiManager(); // Start the web server
+  WiFiCredentials WiFiCredentials = readWiFiCredentialsFromEEPROM();
+  Serial.print("SSID: "); Serial.println(WiFiCredentials.ssid);
+  Serial.print("Password: "); Serial.println(WiFiCredentials.password);
+  connectToWiFi(WiFiCredentials); // Connect to Wi-Fi with credentials from EEPROM
 }
 
 void loop() {
+
+  resetCheckAndStartWiFiManager();
   // SensorData sensorReadings = readSensorValues();
 
   // if (sensorReadings.isValid) {

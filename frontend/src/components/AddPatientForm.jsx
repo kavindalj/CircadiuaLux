@@ -248,7 +248,10 @@ const AddPatientForm = () => {
         </div>
 
         <div className="flex justify-center">
-          <button type="submit" className="w-full mt-3 py-2 font-bold text-white rounded-md cursor-pointer transition-all bg-[#34A8DD] hover:bg-[#056c9c]">
+          <button
+            type="submit"
+            className="cursor-pointer rounded-md bg-gradient-to-r from-[#36AFDE] to-[#74DAF6] text-white hover:brightness-90 focus:outline-none font-bold focus:ring-4 focus:ring-blue-300 w-full mt-3 py-2 rounded-md transition-all"
+          >
             Add Patient
           </button>
         </div>

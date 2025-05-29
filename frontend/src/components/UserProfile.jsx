@@ -69,7 +69,7 @@ const UserProfile = () => {
           </div>
 
           <div className="flex justify-end">
-            <button className="mt-[27px] mr-[37px] bg-[#34A8DD] font-bold text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]">
+            <button className="mt-[27px] shadow-md hover:brightness-90 mr-[37px] bg-gradient-to-r from-[#36AFDE] to-[#74DAF6] font-bold text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]">
               Edit Profile Picture
             </button>
           </div>
@@ -148,7 +148,7 @@ const UserProfile = () => {
       {/* Change Password */}
       <div className="max-w-2xl mx-auto text-left mt-6">
         <button
-          className="bg-[#34A8DD] font-bold text-white px-4 py-2 rounded-md cursor-pointer hover:bg-[#056c9c]"
+          className="mt-2 shadow-md bg-gradient-to-r from-[#36AFDE] to-[#74DAF6] font-bold text-white px-4 py-2 rounded-md cursor-pointer hover:brightness-90 focus:outline-none focus:ring-4 focus:ring-blue-300"
           onClick={handleChangePassword}
         >
           Change Password
