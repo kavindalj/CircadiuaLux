@@ -32,7 +32,7 @@ const AdminSidebar = () => {
   };
 
   return (
-    <div className="w-[240px] h-[92vh] bg-gray-00 shadow-md border-r shadow-[#34A8DD] flex flex-col justify-between items-center py-5">
+    <div className="w-[223px] h-[92vh] bg-gray-00 shadow-md border-r shadow-[#34A8DD] flex flex-col justify-between items-center py-5">
       <ul className="w-full mt-8 list-none">
         {navItems.map(({ label, icon: Icon, link }) => (
           <li key={label} className="w-full flex justify-center">
