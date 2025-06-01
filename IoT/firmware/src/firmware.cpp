@@ -38,7 +38,10 @@ void setup(){
   digitalWrite(AP_LED_PIN, LOW); // Turn off the Access Point LED initially
 
   // Connecting to Wi-Fi
-  // connectToWiFi();
+  WiFiCredentials WiFiCredentials = readWiFiCredentialsFromEEPROM();
+  Serial.print("SSID: "); Serial.println(WiFiCredentials.ssid);
+  Serial.print("Password: "); Serial.println(WiFiCredentials.password);
+  connectToWiFi(WiFiCredentials); // Connect to Wi-Fi with credentials from EEPROM
 
   // Wait for time to be set
   // connectNTPServers();
@@ -50,8 +53,8 @@ void setup(){
   // Serial.println("Current time:");
   // Serial.println(&timeinfo, "%Y-%m-%d %H:%M:%S");
 
-  // setupSensor(); // Initialize the sensor module
-  // setupCCTPins(); // Initialize the CCT pins
+  setupSensor(); // Initialize the sensor module
+  setupCCTPins(); // Initialize the CCT pins
 
   // String time = "03:30";
   
@@ -60,23 +63,27 @@ void setup(){
   // Serial.println(data.sleep_time);
   // Serial.println(data.PhotopicLux);
   // Serial.println(data.CCT_estimated);
-  // startWiFiManager(); // Start the web server
-  WiFiCredentials WiFiCredentials = readWiFiCredentialsFromEEPROM();
-  Serial.print("SSID: "); Serial.println(WiFiCredentials.ssid);
-  Serial.print("Password: "); Serial.println(WiFiCredentials.password);
-  connectToWiFi(WiFiCredentials); // Connect to Wi-Fi with credentials from EEPROM
+
 }
 
 void loop() {
+  // resetCheckAndStartWiFiManager();
+  SensorData sensorReadings = readSensorValues();
 
-  resetCheckAndStartWiFiManager();
-  // SensorData sensorReadings = readSensorValues();
-
-  // if (sensorReadings.isValid) {
-  //   Serial.print(">ColorTemp:"); Serial.println(sensorReadings.colorTemp);
-  //   Serial.print(">Lux:"); Serial.println(sensorReadings.lux);
-  // } else {
-  //   Serial.println("Failed to read valid sensor data.");
-  // }
-
+  if (sensorReadings.isValid) {
+    //Call the PID control function with the sensor readings
+    // PIDControlLight(
+    //   4500, sensorReadings.colorTemp, 
+    //   1000, sensorReadings.lux, 
+    //   Kp_cct, Ki_cct, Kd_cct, 
+    //   Kp_lux, Ki_lux, Kd_lux
+    // );
+    // simpleCCTControl(4500, sensorReadings.colorTemp);
+    // simpleControl(3500, sensorReadings.colorTemp);
+    simpleControl(4500, sensorReadings.colorTemp, 300, sensorReadings.lux);
+  } else {
+    Serial.println("Failed to read valid sensor data.");
+  }
+  // applyCCTAndBrightness(155, 20); // Example call to apply CCT and brightness
+  // Serial.println(sensorReadings.colorTemp);
 }
