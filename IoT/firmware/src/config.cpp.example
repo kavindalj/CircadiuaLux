@@ -1,0 +1,36 @@
+#include <Arduino.h>
+#include "config.h"
+
+// Device ID
+String device_id = "D0001";
+
+// Color Temperature PID
+// double Kp_cct = 0.03;
+// double Ki_cct = 0.001;
+// double Kd_cct = 0.0001;
+
+// Lux/Brightness PID
+// double Kp_lux = 0.3;
+// double Ki_lux = 0.0;
+// double Kd_lux = 0.0;
+
+// Sensor Configuration
+const int SENSOR_LED_PIN = 4; // GPIO for controlling the sensor's onboard LED
+
+// Reset Button Pin
+const int RESET_BTN_PIN = 15; // Reset button pin for the device WiFi reset
+// Access Point mode LED pin
+const int AP_LED_PIN = 5; // LED pin to indicate Access Point mode
+
+//pin definitions for CCT LED strip
+const int WW_PIN = 25; // Warm White channel pin
+const int CW_PIN = 26; // Cool White channel pin
+
+// Put your supabase URL and Anon key here...
+String supabase_url = "https://your-project-id.supabase.co";
+String anon_key = "your-anon-key-goes-here";
+
+// NTP server settings
+const char* ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = 16200;         // GMT offset in seconds (0 for UTC)
+const int daylightOffset_sec = 3600;     // Daylight offset in seconds
