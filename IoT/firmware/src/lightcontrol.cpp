@@ -35,8 +35,8 @@ void applyCCTAndBrightness(int cctValue, int brightnessValue) {
   coolValue = map(cctValue, 0, 255, 0, 255);  // Direct mapping
   
   // Scale both channels by brightness while maintaining ratio
-  // warmValue = (warmValue * brightnessValue) / 255;
-  // coolValue = (coolValue * brightnessValue) / 255;
+  warmValue = (warmValue * brightnessValue) / 255;
+  coolValue = (coolValue * brightnessValue) / 255;
   
   // Apply to the PWM pins
   analogWrite(WW_PIN, warmValue);
@@ -108,48 +108,103 @@ void PIDControlLight(int setCCT, int currentCCT, int setBrightness, int currentB
   // Serial.print(" | Brightness Output: "); Serial.println(output_lux);
 }
 
-void simpleControl(int targetCCT, int currentCCT) {
-    // Static variables to remember previous state
-    static int lastOutputValue = 127;  // Middle point (neutral)
-    static unsigned long lastChangeTime = 0;
-    // Calculate error
-    int error = targetCCT - currentCCT;
-    // Only make adjustments at reasonable intervals
+void simpleControl(int targetCCT, int currentCCT, int targetLux, int currentLux) {
+    // Static variables for CCT control
+    static int lastCCTValue = 127;  // Middle point for CCT
+    static unsigned long lastCCTChangeTime = 0;
+    
+    // Static variables for Lux control
+    static int lastLuxValue = 200;  // Middle brightness
+    static unsigned long lastLuxChangeTime = 0;
+    
     unsigned long now = millis();
-    if (now - lastChangeTime < 200) {
-        return;
+    
+    // PART 1: CCT CONTROL
+    // Calculate CCT error
+    int cctError = targetCCT - currentCCT;
+    
+    // Only adjust CCT at reasonable intervals
+    if (now - lastCCTChangeTime >= 200) {
+        // Determine CCT adjustment amount based on error size
+        int cctAdjustment;
+        if (abs(cctError) > 1000) {
+            cctAdjustment = 10;
+        } else if (abs(cctError) > 500) {
+            cctAdjustment = 5;
+        } else if (abs(cctError) > 200) {
+            cctAdjustment = 2;
+        } else {
+            cctAdjustment = 1;
+        }
+        
+        // Calculate new CCT value
+        int newCCTValue;
+        if (cctError > 0) {
+            // Need to increase CCT (more cool)
+            newCCTValue = lastCCTValue + cctAdjustment;
+        } else if (cctError < 0) {
+            // Need to decrease CCT (more warm)
+            newCCTValue = lastCCTValue - cctAdjustment;
+        } else {
+            newCCTValue = lastCCTValue;
+        }
+        
+        // Constrain to valid range
+        newCCTValue = constrain(newCCTValue, 0, 255);
+        
+        // Only update if value changed
+        if (newCCTValue != lastCCTValue) {
+            lastCCTChangeTime = now;
+            lastCCTValue = newCCTValue;
+        }
     }
-    // Determine adjustment amount based on error size
-    int adjustmentAmount;
-    if (abs(error) > 1000) {
-        adjustmentAmount = 10;
-    } else if (abs(error) > 500) {
-        adjustmentAmount = 5;
-    } else if (abs(error) > 200) {
-        adjustmentAmount = 2;
-    } else {
-        adjustmentAmount = 1;
+    
+    // PART 2: LUX CONTROL
+    // Calculate Lux error
+    int luxError = targetLux - currentLux;
+    
+    // Only adjust Lux at reasonable intervals
+    if (now - lastLuxChangeTime >= 300) { // Slightly slower than CCT updates
+        // Determine Lux adjustment amount based on error size
+        int luxAdjustment;
+        if (abs(luxError) > 200) {
+            luxAdjustment = 10;
+        } else if (abs(luxError) > 100) {
+            luxAdjustment = 5;
+        } else if (abs(luxError) > 50) {
+            luxAdjustment = 3;
+        } else {
+            luxAdjustment = 1;
+        }
+        
+        // Calculate new Lux value
+        int newLuxValue;
+        if (luxError > 0) {
+            // Need to increase brightness
+            newLuxValue = lastLuxValue + luxAdjustment;
+        } else if (luxError < 0) {
+            // Need to decrease brightness
+            newLuxValue = lastLuxValue - luxAdjustment;
+        } else {
+            newLuxValue = lastLuxValue;
+        }
+        
+        // Constrain to valid range
+        newLuxValue = constrain(newLuxValue, 20, 255); // Min brightness of 20 to prevent turning off
+        
+        // Only update if value changed
+        if (newLuxValue != lastLuxValue) {
+            lastLuxChangeTime = now;
+            lastLuxValue = newLuxValue;
+        }
     }
-    // Direction of adjustment
-    int newOutputValue;
-    if (error > 0) {
-        // Need to increase CCT (more cool)
-        newOutputValue = lastOutputValue + adjustmentAmount;
-    } else if (error < 0) {
-        // Need to decrease CCT (more warm)
-        newOutputValue = lastOutputValue - adjustmentAmount;
-    } else {
-        newOutputValue = lastOutputValue;
-    }
-    // Constrain to valid range
-    newOutputValue = constrain(newOutputValue, 0, 255);
-    // Only record time if we actually changed the output
-    if (newOutputValue != lastOutputValue) {
-        lastChangeTime = now;
-        lastOutputValue = newOutputValue;
-    }
-    // Apply output
-    applyCCTAndBrightness(newOutputValue, 200);
-    Serial.print(">Target:"); Serial.println(targetCCT);
-    Serial.print(">Current:"); Serial.println(currentCCT);
+    
+    // Apply both CCT and brightness together
+    applyCCTAndBrightness(lastCCTValue, lastLuxValue);
+    
+    // Debug output
+    Serial.print(">CCT Target:"); Serial.println(targetCCT);
+    Serial.print(">CCT Current:"); Serial.println(currentCCT);
+    Serial.print(">Lux Target:"); Serial.println(targetLux);
+    Serial.print(">Lux Current:"); Serial.println(currentLux);
 }

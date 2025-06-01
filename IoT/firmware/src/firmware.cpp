@@ -79,10 +79,11 @@ void loop() {
     //   Kp_lux, Ki_lux, Kd_lux
     // );
     // simpleCCTControl(4500, sensorReadings.colorTemp);
-    simpleControl(4500, sensorReadings.colorTemp);
+    // simpleControl(3500, sensorReadings.colorTemp);
+    simpleControl(4500, sensorReadings.colorTemp, 300, sensorReadings.lux);
   } else {
     Serial.println("Failed to read valid sensor data.");
   }
-  // applyCCTAndBrightness(0, 55); // Example call to apply CCT and brightness
+  // applyCCTAndBrightness(155, 20); // Example call to apply CCT and brightness
   // Serial.println(sensorReadings.colorTemp);
 }
