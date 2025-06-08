@@ -7,8 +7,6 @@
 </picture>
 
 ![MIT License](https://img.shields.io/github/license/kavindalj/CircadiaLux)
-![Issues](https://img.shields.io/github/issues/kavindalj/CircadiaLux)
-![Last Commit](https://img.shields.io/github/last-commit/kavindalj/CircadiaLux)
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=kavindalj.CircadiaLux&title=Visitors)
 
 A comprehensive system for managing circadian rhythm-friendly lighting environments in healthcare settings.
