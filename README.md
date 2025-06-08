@@ -1,47 +1,95 @@
-# CircadiuaLux
+# CircadiaLux
+
+<picture>
+  <source srcset="CircadiaLux_w_logo.png" media="(prefers-color-scheme: dark)">
+  <source srcset="CircadiaLux_b_logo.png" media="(prefers-color-scheme: light)">
+  <img src="CircadiaLux_b_logo.png" alt="CircadiaLux Logo">
+</picture>
+
+![MIT License](https://img.shields.io/github/license/kavindalj/CircadiaLux)
+![Issues](https://img.shields.io/github/issues/kavindalj/CircadiaLux)
+![Last Commit](https://img.shields.io/github/last-commit/kavindalj/CircadiaLux)
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=kavindalj.CircadiaLux&title=Visitors)
+
+A comprehensive system for managing circadian rhythm-friendly lighting environments in healthcare settings.
 
 ## Overview
 
-This is our team project, which includes a **frontend** built with **React** and **Tailwind CSS**, a **backend** using **Firebase**, and components for **IoT**.
+CircadiaLux is an integrated solution that combines web technologies, IoT devices, and machine learning to provide personalized lighting environments that support patients' circadian rhythms for better sleep and recovery outcomes.
 
-- **Frontend**: React application styled with Tailwind CSS.
-- **Backend**: Firebase for authentication and Firestore.
-- **IoT**: IoT devices integrated with the frontend.
+- **Frontend**: React application with Tailwind CSS providing interfaces for administrators and caretakers
+- **Backend**: Supabase for authentication, database storage, and real-time updates
+- **IoT**: ESP32-based devices for monitoring and controlling lighting parameters
+- **ML**: Machine learning component for personalized lighting recommendations
 
-For detailed setup and installation instructions for the frontend, refer to the [Frontend README](frontend/README.md).
+## Project Structure
 
-## Development Workflow
+```
+CircadiaLux/
+├── frontend/     # React web application
+├── IoT/          # ESP32 firmware and hardware designs
+├── ML/           # Machine learning prediction service
+└── supabase/     # Database schema and configuration
+```
 
-### Commit Message Structure
+## Key Features
 
-We follow the **Conventional Commits** specification for commit messages to maintain a clean and consistent Git history. Please refer to the official [Conventional Commits guide](https://www.conventionalcommits.org/) for more details on the commit message format.
+- 📊 **Dashboard Views** for administrators and caretakers
+- 👤 **User Management** for creating and managing user accounts
+- 🔌 **Device Management** for setting up and monitoring CircadiaLux devices
+- 👨‍⚕️ **Patient Management** for associating patients with caretakers and devices
+- 🤖 **ML-driven Lighting** recommendations based on patient profiles
+- 🔐 **Authentication** with role-based access control
 
-Example commit message format:
+## Component Documentation
 
-- `feat: add new login page`
-- `fix: resolve authentication bug`
-- `chore: update dependencies`
-  
-### Branching Strategy (Feature Branches + Dev Branch)
+- [Frontend README](frontend/README.md) - Setup and usage of the web application
+- [IoT README](IoT/README.md) - Hardware specifications and firmware setup
+- [ML README](ML/README.md) - Machine learning model information
+- [Supabase README](supabase/README.md) - Database schema and configuration
 
-We follow a controlled **branching strategy** similar to **Git Flow** for better organization and stability. Here’s how our branching workflow works:
+## Installation and Setup
 
-1. **Main Branch (`main`)**: The `main` branch is reserved for **production-ready** code. It should always contain stable and tested code that’s ready for release.
-   
-2. **Development Branch (`dev`)**: The `dev` branch serves as the **integration** branch for features under development. All feature branches are created from `dev`, and once a feature is complete, it gets merged back into `dev`.
+First, clone the repository:
 
-3. **Feature Branches**: Feature branches are created from the `dev` branch. Each feature branch should be **small and focused** on a specific task or feature. These branches should be merged into `dev` once the feature is complete and tested.
+```bash
+git clone https://github.com/kavindalj/CircadiaLux.git
+cd CircadiaLux
+```
 
-4. **Merging to Main**: After a certain period of development, when `dev` is stable and all features are merged in, the `dev` branch is merged into `main`. This can be done on a regular schedule or when the code in `dev` is deemed production-ready.
+For the best results, we recommend setting up the CircadiaLux system in the following order. For each component (except database), navigate to the component directory with `cd component-name` before following its setup instructions.
 
-This workflow prevents direct pushes to the `main` branch, ensuring better control over the development process and easier integration.
+1. **Database Setup (Recommended First Step)**
+   - Start with the Supabase configuration as it's the foundation of the system
+   - Follow instructions in the [Supabase README](supabase/README.md)
+   - This will create all necessary tables and security policies
 
-### Why This Workflow?
+2. **Machine Learning Component**
+   - Set up the ML prediction service after the database
+   - Follow instructions in the [ML README](ML/README.md)
+   - Make sure to download a pre-trained model or train one yourself by following the provided steps.
 
-We prefer this workflow because it offers a **more controllable** development environment. By having:
-- A clear **separation between production-ready and in-progress code**.
-- A **centralized integration branch (`dev`)** where all feature branches get merged before production.
-- The ability to test features before they hit `main`.
+3. **Frontend Application**
+   - Configure and launch the web interface next
+   - Follow instructions in the [Frontend README](frontend/README.md)
+   - Connect to your Supabase instance using environment variables
 
-This setup helps maintain a stable and predictable release cycle.
+4. **IoT Devices**
+   - Finally, set up the physical hardware components
+   - Follow instructions in the [IoT README](IoT/README.md)
+   - Configure devices to connect to your Supabase instance
 
+## System Requirements
+
+- **Supabase**: Any tier (including free tier for development)
+- **Frontend**: Node.js 18.x or later, npm 9.x or later
+- **ML**: Python 3.10+, pip, and dependencies listed in requirements.txt
+- **IoT**: PlatformIO, ESP32 development board, and supporting components
+
+## Contributing
+
+We welcome contributions to CircadiaLux! Please check our [Contributing Guide](CONTRIBUTING.md) for guidelines on how to proceed.
+
+## License
+
+CircadiaLux is licensed under the [MIT License](LICENSE). See the [LICENSE](LICENSE) file for more details.
